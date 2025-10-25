@@ -4,11 +4,15 @@
 Sistema de gestión de inventario desarrollado en Java Swing para el proyecto final de Construcción de Software I.
 
 ## 🎯 Funcionalidades Principales
-- ✅ Registro de productos (nombre, cantidad, precio)
-- ✅ Generación de facturas
-- ✅ Proceso de ventas
-- ✅ Sistema de autenticación (Login)
-- ✅ Interfaz gráfica completa con todos los componentes requeridos
+✅ Registro de productos (nombre, cantidad, precio)
+
+✅ Generación de facturas
+
+✅ Proceso de ventas
+
+✅ Sistema de autenticación (Login)
+
+✅ Interfaz gráfica completa con todos los componentes requeridos
 
 ## 🏗️ Estructura del Proyecto
 ```
@@ -40,8 +44,11 @@ src/
 - Issues para seguimiento de tareas
 
 ## 📝 Criterios de Evaluación
-- [x] Uso de todos los componentes gráficos requeridos
-- [x] Aspecto investigativo y mejoras propuestas
-- [x] Organización modular del código
-- [x] Colaboración evidenciada en GitHub
+✅ Uso de todos los componentes gráficos requeridos
+
+✅ Aspecto investigativo y mejoras propuestas
+
+✅ Organización modular del código
+
+✅ Colaboración evidenciada en GitHub
 
