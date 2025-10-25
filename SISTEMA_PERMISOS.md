@@ -1,50 +1,83 @@
-# 🔐 Sistema de Permisos y Roles
+# 🛡️ Sistema de Permisos y Roles
+Sistema de control de acceso basado en roles y niveles de permisos, implementado en Java.
+Permite gestionar usuarios con diferentes privilegios para garantizar la seguridad y jerarquía dentro del sistema.
 
-## 📋 Jerarquía de Roles
+# 👑 Jerarquía de Roles
 
-### **👑 SUPER_ADMIN (Super Administrador)**
-- **Nivel de Permiso**: 100 (Máximo)
-- **Credenciales**: `superadmin` / `superadmin123`
-- **Permisos Exclusivos**:
-  - ✅ **Crear cualquier tipo de usuario** (incluyendo otros SUPER_ADMIN)
-  - ✅ **Gestionar todos los productos**
-  - ✅ **Procesar todas las ventas**
-  - ✅ **Generar todos los reportes**
-  - ✅ **Acceso completo al sistema**
-  - ✅ **Modificar configuración del sistema**
+### **🧠 SUPER_ADMIN (Super Administrador)**
+
+- Nivel de Permiso: 100 (Máximo)
+
+- Credenciales: superadmin / superadmin123
+
+- Permisos Exclusivos:
+
+✅ Crear cualquier tipo de usuario (incluidos otros SUPER_ADMIN)
+
+✅ Gestionar todos los productos
+
+✅ Procesar todas las ventas
+
+✅ Generar todos los reportes
+
+✅ Acceso completo al sistema
+
+✅ Modificar configuración del sistema
 
 ### **👨‍💼 ADMIN (Administrador)**
-- **Nivel de Permiso**: 50
-- **Credenciales**: `admin` / `admin123`
-- **Permisos**:
-  - ❌ **NO puede crear usuarios**
-  - ✅ **Gestionar productos**
-  - ✅ **Procesar ventas**
-  - ✅ **Generar reportes**
-  - ✅ **Consultar datos**
+
+- Nivel de Permiso: 50
+
+- Credenciales: admin / admin123
+
+Permisos:
+
+❌ No puede crear usuarios
+
+✅ Gestionar productos
+
+✅ Procesar ventas
+
+✅ Generar reportes
+
+✅ Consultar datos
 
 ### **👨‍💻 VENDEDOR (Vendedor)**
-- **Nivel de Permiso**: 10
-- **Credenciales**: `vendedor` / `vendedor123`
-- **Permisos**:
-  - ❌ **NO puede crear usuarios**
-  - ❌ **NO puede gestionar productos**
-  - ✅ **Procesar ventas**
-  - ❌ **NO puede generar reportes**
-  - ✅ **Consultar datos**
+
+- Nivel de Permiso: 10
+
+- Credenciales: vendedor / vendedor123
+
+Permisos:
+
+❌ No puede crear usuarios
+
+❌ No puede gestionar productos
+
+✅ Procesar ventas
+
+❌ No puede generar reportes
+
+✅ Consultar datos
 
 ### **👁️ CONSULTA (Solo Consulta)**
-- **Nivel de Permiso**: 1 (Mínimo)
-- **Permisos**:
-  - ❌ **NO puede crear usuarios**
-  - ❌ **NO puede gestionar productos**
-  - ❌ **NO puede procesar ventas**
-  - ❌ **NO puede generar reportes**
-  - ✅ **Solo consultar datos**
+- Nivel de Permiso: 1 (Mínimo)
+
+Permisos:
+
+❌ No puede crear usuarios
+
+❌ No puede gestionar productos
+
+❌ No puede procesar ventas
+
+❌ No puede generar reportes
+
+✅ Solo consultar datos
 
 ## 🔒 **Control de Acceso**
 
-### **Registro de Usuarios**
+### **🧩 Registro de Usuarios**
 ```java
 // Solo SUPER_ADMIN puede crear usuarios
 if (!usuarioActual.esSuperAdministrador()) {
@@ -53,7 +86,7 @@ if (!usuarioActual.esSuperAdministrador()) {
 }
 ```
 
-### **Verificación de Permisos**
+### **✅Verificación de Permisos**
 ```java
 // Verificar si puede realizar una acción
 if (usuario.puedeRealizarAccion("CREAR_USUARIOS")) {
@@ -63,7 +96,7 @@ if (usuario.puedeRealizarAccion("CREAR_USUARIOS")) {
 }
 ```
 
-### **Creación de Usuarios con Permisos**
+### **🧱Creación de Usuarios con Permisos**
 ```java
 // Verificar que puede crear este tipo de usuario
 if (usuarioActual.puedeCrearUsuario(Rol.ADMIN)) {
@@ -128,7 +161,7 @@ private void abrirRegistrarUsuario() {
 
 ## 🚀 **Flujo de Trabajo**
 
-### **1. Primera Configuración**
+### **🧭 Primera Configuración**
 ```
 1. Iniciar sesión como SUPER_ADMIN
 2. Crear usuarios ADMIN según necesidad
@@ -136,14 +169,14 @@ private void abrirRegistrarUsuario() {
 4. Asignar permisos según roles
 ```
 
-### **2. Gestión Diaria**
+### **⚙️Gestión Diaria**
 ```
 1. SUPER_ADMIN: Gestiona usuarios y configuración
 2. ADMIN: Gestiona productos y reportes
 3. VENDEDOR: Procesa ventas y consultas
 ```
 
-### **3. Escalabilidad**
+### **📈Escalabilidad**
 ```
 1. SUPER_ADMIN puede crear más ADMIN
 2. Cada ADMIN puede gestionar su área
@@ -152,7 +185,7 @@ private void abrirRegistrarUsuario() {
 
 ## 🔧 **Implementación Técnica**
 
-### **Enum de Roles**
+### **🧱Enum de Roles**
 ```java
 public enum Rol {
     SUPER_ADMIN("SUPER_ADMIN", "Super Administrador", 100),
@@ -162,7 +195,7 @@ public enum Rol {
 }
 ```
 
-### **Verificación de Permisos**
+### **🔍Verificación de Permisos**
 ```java
 public boolean puedeRealizarAccion(String accion) {
     switch (accion) {
@@ -175,7 +208,7 @@ public boolean puedeRealizarAccion(String accion) {
 }
 ```
 
-### **Control de Acceso**
+### **🔐Control de Acceso**
 ```java
 public boolean puedeCrearUsuario(Rol rolDestino) {
     // Solo SUPER_ADMIN puede crear cualquier tipo de usuario
@@ -193,7 +226,7 @@ public boolean puedeCrearUsuario(Rol rolDestino) {
 | Generar Reportes | ✅ | ✅ | ❌ | ❌ |
 | Consultar Datos | ✅ | ✅ | ✅ | ✅ |
 
-## 🛠️ **Configuración de Usuarios**
+## 🧑‍💻 **Configuración de Usuarios**
 
 ### **Crear SUPER_ADMIN (Solo en código)**
 ```java
@@ -222,7 +255,7 @@ usuarios.add(new Usuario("superadmin", "superadmin123",
 
 ## 🔍 **Verificación de Seguridad**
 
-### **Logs de Seguridad**
+### **🚨Logs de Seguridad**
 ```java
 // Registrar intentos de acceso no autorizado
 if (!usuario.puedeRealizarAccion("CREAR_USUARIOS")) {
@@ -231,7 +264,7 @@ if (!usuario.puedeRealizarAccion("CREAR_USUARIOS")) {
 }
 ```
 
-### **Auditoría de Usuarios**
+### **📅Auditoría de Usuarios**
 ```java
 // Registrar quién creó cada usuario
 public class Usuario {
@@ -241,21 +274,21 @@ public class Usuario {
 }
 ```
 
-## 🚨 **Buenas Prácticas de Seguridad**
+### 🔐 **Buenas Prácticas de Seguridad**
 
-### **1. Contraseñas Seguras**
+### **🔸 Contraseñas Seguras**
 - **Mínimo 8 caracteres**
 - **Incluir números y símbolos**
 - **No usar contraseñas obvias**
 - **Cambiar contraseñas regularmente**
 
-### **2. Gestión de Usuarios**
+### **🔸 Gestión de Usuarios**
 - **Solo SUPER_ADMIN** puede crear usuarios
 - **Revisar permisos** regularmente
 - **Desactivar usuarios** inactivos
 - **Auditar accesos** periódicamente
 
-### **3. Configuración del Sistema**
+### **🔸 Configuración del Sistema**
 - **Mantener credenciales** del SUPER_ADMIN seguras
 - **Documentar cambios** de permisos
 - **Respaldar configuración** de usuarios
