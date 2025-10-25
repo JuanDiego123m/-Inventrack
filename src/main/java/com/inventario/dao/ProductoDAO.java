@@ -126,17 +126,18 @@ public class ProductoDAO {
      * @return true si se creó exitosamente
      */
     public boolean crear(Producto producto) {
-        String sql = "INSERT INTO productos (nombre, descripcion, precio, cantidad, categoria, activo) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO productos (codigo, nombre, descripcion, precio, cantidad, categoria, activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = dbManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, producto.getNombre());
-            stmt.setString(2, producto.getDescripcion());
-            stmt.setBigDecimal(3, producto.getPrecio());
-            stmt.setInt(4, producto.getCantidad());
-            stmt.setString(5, producto.getCategoria());
-            stmt.setBoolean(6, producto.isActivo());
+            stmt.setString(1, producto.getCodigo());
+            stmt.setString(2, producto.getNombre());
+            stmt.setString(3, producto.getDescripcion());
+            stmt.setBigDecimal(4, producto.getPrecio());
+            stmt.setInt(5, producto.getCantidad());
+            stmt.setString(6, producto.getCategoria());
+            stmt.setBoolean(7, producto.isActivo());
 
             int rowsAffected = stmt.executeUpdate();
             
@@ -163,20 +164,39 @@ public class ProductoDAO {
      * @return true si se actualizó exitosamente
      */
     public boolean actualizar(Producto producto) {
-        String sql = "UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, cantidad = ?, categoria = ?, activo = ? WHERE id = ?";
+        // Primero verificar si el código cambió y si el nuevo código ya existe
+        String checkSql = "SELECT id FROM productos WHERE codigo = ? AND id != ?";
+        String updateSql = "UPDATE productos SET codigo = ?, nombre = ?, descripcion = ?, precio = ?, cantidad = ?, categoria = ?, activo = ? WHERE id = ?";
 
-        try (Connection conn = dbManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dbManager.getConnection()) {
+            
+            // Verificar si el código nuevo ya existe en otro producto
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                checkStmt.setString(1, producto.getCodigo());
+                checkStmt.setInt(2, producto.getId());
+                
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next()) {
+                        // El código ya existe en otro producto
+                        logger.warning("El código '" + producto.getCodigo() + "' ya está en uso por otro producto");
+                        throw new SQLException("El código ya está en uso por otro producto");
+                    }
+                }
+            }
+            
+            // Si llegamos aquí, el código es único o es el mismo, procedemos con la actualización
+            try (PreparedStatement stmt = conn.prepareStatement(updateSql)) {
+                stmt.setString(1, producto.getCodigo());
+                stmt.setString(2, producto.getNombre());
+                stmt.setString(3, producto.getDescripcion());
+                stmt.setBigDecimal(4, producto.getPrecio());
+                stmt.setInt(5, producto.getCantidad());
+                stmt.setString(6, producto.getCategoria());
+                stmt.setBoolean(7, producto.isActivo());
+                stmt.setInt(8, producto.getId());
 
-            stmt.setString(1, producto.getNombre());
-            stmt.setString(2, producto.getDescripcion());
-            stmt.setBigDecimal(3, producto.getPrecio());
-            stmt.setInt(4, producto.getCantidad());
-            stmt.setString(5, producto.getCategoria());
-            stmt.setBoolean(6, producto.isActivo());
-            stmt.setInt(7, producto.getId());
-
-            return stmt.executeUpdate() > 0;
+                return stmt.executeUpdate() > 0;
+            }
 
         } catch (SQLException e) {
             logger.severe("Error al actualizar producto: " + e.getMessage());
@@ -346,6 +366,7 @@ public class ProductoDAO {
     private Producto mapearResultSet(ResultSet rs) throws SQLException {
         Producto producto = new Producto();
         producto.setId(rs.getInt("id"));
+        producto.setCodigo(rs.getString("codigo"));
         producto.setNombre(rs.getString("nombre"));
         producto.setDescripcion(rs.getString("descripcion"));
         producto.setPrecio(rs.getBigDecimal("precio"));

@@ -49,11 +49,32 @@ public class ProductoController {
                 view.limpiarFormulario();
                 cargarProductos();
             } else {
-                view.mostrarError("Error al guardar el producto.");
+                view.mostrarError("Error al guardar el producto.\nVerifique que el código no esté duplicado.");
             }
 
+        } catch (NumberFormatException e) {
+            String mensaje = e.getMessage();
+            if (mensaje != null && mensaje.contains("Formato de precio inválido")) {
+                view.mostrarError("Formato de precio inválido.\n\n" +
+                                "Formatos válidos:\n" +
+                                "• 1000\n" +
+                                "• 1000.50\n" +
+                                "• 1,000.50\n" +
+                                "• 1.000,50\n\n" +
+                                "No use letras ni símbolos especiales.");
+            } else {
+                view.mostrarError("Error en el formato de los datos:\n" +
+                                "• Precio: solo números y punto/coma decimal\n" +
+                                "• Cantidad: solo números enteros\n\n" +
+                                "Detalle: " + mensaje);
+            }
         } catch (Exception e) {
-            view.mostrarError("Error al guardar producto: " + e.getMessage());
+            String mensaje = e.getMessage();
+            if (mensaje != null && (mensaje.contains("UNIQUE constraint failed") || mensaje.contains("already exists"))) {
+                view.mostrarError("El código del producto ya existe.\nPor favor, ingrese un código único.");
+            } else {
+                view.mostrarError("Error al guardar producto: " + mensaje);
+            }
         }
     }
 
@@ -88,16 +109,37 @@ public class ProductoController {
                 view.limpiarFormulario();
                 cargarProductos();
             } else {
-                view.mostrarError("Error al actualizar el producto.");
+                view.mostrarError("Error al actualizar el producto.\nVerifique que el código no esté duplicado.");
             }
 
+        } catch (NumberFormatException e) {
+            String mensaje = e.getMessage();
+            if (mensaje != null && mensaje.contains("Formato de precio inválido")) {
+                view.mostrarError("Formato de precio inválido.\n\n" +
+                                "Formatos válidos:\n" +
+                                "• 1000\n" +
+                                "• 1000.50\n" +
+                                "• 1,000.50\n" +
+                                "• 1.000,50\n\n" +
+                                "No use letras ni símbolos especiales.");
+            } else {
+                view.mostrarError("Error en el formato de los datos:\n" +
+                                "• Precio: solo números y punto/coma decimal\n" +
+                                "• Cantidad: solo números enteros\n\n" +
+                                "Detalle: " + mensaje);
+            }
         } catch (Exception e) {
-            view.mostrarError("Error al actualizar producto: " + e.getMessage());
+            String mensaje = e.getMessage();
+            if (mensaje != null && mensaje.contains("UNIQUE constraint failed")) {
+                view.mostrarError("El código del producto ya existe.\nPor favor, ingrese un código único.");
+            } else {
+                view.mostrarError("Error al actualizar producto: " + mensaje);
+            }
         }
     }
 
     /**
-     * Elimina un producto del sistema
+     * Elimina un producto del sistema con doble confirmación
      */
     public void eliminarProducto() {
         try {
@@ -107,23 +149,50 @@ public class ProductoController {
                 return;
             }
 
-            // Confirmar eliminación
-            int opcion = javax.swing.JOptionPane.showConfirmDialog(
+            // PRIMERA CONFIRMACIÓN
+            int primeraConfirmacion = javax.swing.JOptionPane.showConfirmDialog(
                 view,
-                "¿Está seguro que desea eliminar el producto '" + 
-                productoSeleccionado.getNombre() + "'?",
-                "Confirmar Eliminación",
-                javax.swing.JOptionPane.YES_NO_OPTION
+                "¿Está seguro que desea eliminar el producto?\n\n" + 
+                "Código: " + productoSeleccionado.getCodigo() + "\n" +
+                "Nombre: " + productoSeleccionado.getNombre() + "\n" +
+                "Precio: $" + productoSeleccionado.getPrecio() + "\n\n" +
+                "Esta acción no se puede deshacer.",
+                "⚠️ Confirmar Eliminación",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.WARNING_MESSAGE
             );
 
-            if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+            if (primeraConfirmacion != javax.swing.JOptionPane.YES_OPTION) {
+                return; // Usuario canceló
+            }
+
+            // SEGUNDA CONFIRMACIÓN
+            int segundaConfirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                view,
+                "⚠️ ÚLTIMA ADVERTENCIA ⚠️\n\n" +
+                "¿Realmente desea eliminar el producto '" + 
+                productoSeleccionado.getNombre() + "'?\n\n" +
+                "Esta acción es IRREVERSIBLE y eliminará:\n" +
+                "• El producto del inventario\n" +
+                "• Todas sus referencias en el sistema\n\n" +
+                "¿Está COMPLETAMENTE seguro?",
+                "🚨 CONFIRMACIÓN FINAL",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+
+            if (segundaConfirmacion == javax.swing.JOptionPane.YES_OPTION) {
                 if (service.eliminarProducto(productoSeleccionado.getId())) {
-                    view.mostrarMensaje("Producto eliminado exitosamente.");
+                    view.mostrarMensaje("✅ Producto eliminado exitosamente.\n\n" +
+                                      "Código: " + productoSeleccionado.getCodigo() + "\n" +
+                                      "Nombre: " + productoSeleccionado.getNombre());
                     view.limpiarFormulario();
                     cargarProductos();
                 } else {
-                    view.mostrarError("Error al eliminar el producto.");
+                    view.mostrarError("Error al eliminar el producto.\nPor favor, intente nuevamente.");
                 }
+            } else {
+                view.mostrarMensaje("Eliminación cancelada.\nEl producto no ha sido eliminado.");
             }
 
         } catch (Exception e) {
@@ -137,10 +206,10 @@ public class ProductoController {
     public void buscarProductos() {
         try {
             String nombre = view.getNombre();
-            String categoria = view.getCategoria();
+            String categoria = view.getCategoriaSeleccionada();
             
             productos = service.buscarProductos(nombre, categoria);
-            view.actualizarTabla(productos);
+            actualizarTablaProductos(productos);
             
             if (productos.isEmpty()) {
                 view.mostrarMensaje("No se encontraron productos con los criterios especificados.");
@@ -157,7 +226,7 @@ public class ProductoController {
     public void cargarProductos() {
         try {
             productos = service.obtenerTodosProductos();
-            view.actualizarTabla(productos);
+            actualizarTablaProductos(productos);
         } catch (Exception e) {
             view.mostrarError("Error al cargar productos: " + e.getMessage());
         }
@@ -225,11 +294,16 @@ public class ProductoController {
      */
     private Producto crearProductoDesdeFormulario() {
         Producto producto = new Producto();
+        producto.setCodigo(view.getCodigo());
         producto.setNombre(view.getNombre());
         producto.setDescripcion(view.getDescripcion());
-        producto.setPrecio(new BigDecimal(view.getPrecio()));
+        
+        // Limpiar formato del precio antes de convertir
+        String precioLimpio = limpiarFormatoPrecio(view.getPrecio());
+        producto.setPrecio(new BigDecimal(precioLimpio));
+        
         producto.setCantidad(Integer.parseInt(view.getCantidad()));
-        producto.setCategoria(view.getCategoria());
+        producto.setCategoria(view.getCategoriaSeleccionada());
         return producto;
     }
 
@@ -237,11 +311,105 @@ public class ProductoController {
      * Actualiza un producto con los datos del formulario
      */
     private void actualizarProductoDesdeFormulario(Producto producto) {
+        producto.setCodigo(view.getCodigo());
         producto.setNombre(view.getNombre());
         producto.setDescripcion(view.getDescripcion());
-        producto.setPrecio(new BigDecimal(view.getPrecio()));
+        
+        // Limpiar formato del precio antes de convertir
+        String precioLimpio = limpiarFormatoPrecio(view.getPrecio());
+        producto.setPrecio(new BigDecimal(precioLimpio));
+        
         producto.setCantidad(Integer.parseInt(view.getCantidad()));
-        producto.setCategoria(view.getCategoria());
+        producto.setCategoria(view.getCategoriaSeleccionada());
+    }
+    
+    /**
+     * Limpia el formato del precio para convertirlo a BigDecimal
+     * Elimina símbolos de moneda, comas y espacios
+     * 
+     * @param precio Precio con formato (ej: "$1,000.00" o "1.000,00")
+     * @return Precio limpio (ej: "1000.00")
+     */
+    private String limpiarFormatoPrecio(String precio) {
+        if (precio == null || precio.trim().isEmpty()) {
+            return "0";
+        }
+        
+        // Eliminar espacios, símbolos de moneda y otros caracteres no numéricos
+        String limpio = precio.trim()
+            .replace("$", "")
+            .replace("€", "")
+            .replace("£", "")
+            .replace("¥", "")
+            .replace(" ", "")
+            .replace("\u00A0", ""); // Non-breaking space
+        
+        // Detectar si usa coma como separador decimal (formato europeo)
+        // Ej: "1.000,50" -> tiene punto antes de la coma
+        if (limpio.contains(",") && limpio.contains(".")) {
+            // Si el punto está antes de la coma, es formato europeo
+            if (limpio.indexOf(".") < limpio.indexOf(",")) {
+                // Formato: 1.000,50 -> 1000.50
+                limpio = limpio.replace(".", "").replace(",", ".");
+            } else {
+                // Formato: 1,000.50 -> 1000.50
+                limpio = limpio.replace(",", "");
+            }
+        } else if (limpio.contains(",")) {
+            // Solo tiene coma, puede ser decimal o separador de miles
+            // Si hay más de una coma o está lejos del final, es separador de miles
+            long comaPos = limpio.indexOf(",");
+            if (limpio.length() - comaPos <= 3) {
+                // Probablemente es decimal: 1000,50 -> 1000.50
+                limpio = limpio.replace(",", ".");
+            } else {
+                // Probablemente es separador de miles: 1,000 -> 1000
+                limpio = limpio.replace(",", "");
+            }
+        }
+        
+        // Validar que solo contenga dígitos y punto decimal
+        if (!limpio.matches("^\\d+(\\.\\d+)?$")) {
+            throw new NumberFormatException("Formato de precio inválido: " + precio);
+        }
+        
+        return limpio;
+    }
+    
+    /**
+     * Actualiza la tabla de productos en la vista
+     */
+    private void actualizarTablaProductos(List<Producto> productos) {
+        view.getModeloTabla().setRowCount(0);
+        for (Producto producto : productos) {
+            Object[] fila = {
+                producto.getCodigo(),
+                producto.getNombre(),
+                producto.getDescripcion(),
+                "$" + producto.getPrecio(),
+                producto.getCantidad(),
+                producto.getCategoria()
+            };
+            view.getModeloTabla().addRow(fila);
+        }
+    }
+    
+    /**
+     * Selecciona un producto de la tabla para editar
+     */
+    public void seleccionarProducto(int filaSeleccionada) {
+        if (filaSeleccionada >= 0 && filaSeleccionada < productos.size()) {
+            Producto producto = productos.get(filaSeleccionada);
+            view.setProductoSeleccionado(producto);
+            
+            // Llenar formulario
+            view.setCodigo(producto.getCodigo());
+            view.setNombre(producto.getNombre());
+            view.setDescripcion(producto.getDescripcion());
+            view.setPrecio(producto.getPrecio().toString());
+            view.setCantidad(String.valueOf(producto.getCantidad()));
+            view.setCategoria(producto.getCategoria());
+        }
     }
 }
 

@@ -68,10 +68,67 @@ public class DatabaseManager {
     private void initializeDatabase() {
         try (Connection conn = getConnection()) {
             createTables(conn);
+            migrateDatabase(conn);
             insertInitialData(conn);
             logger.info("Base de datos inicializada correctamente");
         } catch (SQLException e) {
             logger.severe("Error al inicializar la base de datos: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Migra la base de datos existente para agregar nuevas columnas
+     * 
+     * @param conn Conexión a la base de datos
+     * @throws SQLException Si hay error al migrar
+     */
+    private void migrateDatabase(Connection conn) throws SQLException {
+        try (Statement stmt = conn.createStatement()) {
+            // Verificar si la columna 'codigo' existe en productos
+            try {
+                stmt.execute("SELECT codigo FROM productos LIMIT 1");
+                logger.info("La columna 'codigo' ya existe en la tabla productos");
+            } catch (SQLException e) {
+                // La columna no existe, agregarla
+                logger.info("Agregando columna 'codigo' a la tabla productos");
+                
+                // Crear tabla temporal con la nueva estructura
+                String createTempTable = """
+                    CREATE TABLE productos_temp (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        codigo VARCHAR(20) NOT NULL UNIQUE,
+                        nombre VARCHAR(100) NOT NULL,
+                        descripcion TEXT,
+                        precio DECIMAL(10,2) NOT NULL,
+                        cantidad INTEGER NOT NULL,
+                        categoria VARCHAR(50) NOT NULL,
+                        activo BOOLEAN DEFAULT TRUE,
+                        fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                """;
+                stmt.execute(createTempTable);
+                
+                // Copiar datos existentes generando códigos automáticos
+                String copyData = """
+                    INSERT INTO productos_temp (id, codigo, nombre, descripcion, precio, cantidad, categoria, activo, fecha_registro)
+                    SELECT id, 'PROD' || substr('000' || id, -3), nombre, descripcion, precio, cantidad, categoria, activo, fecha_registro
+                    FROM productos
+                """;
+                stmt.execute(copyData);
+                
+                // Eliminar tabla antigua
+                stmt.execute("DROP TABLE productos");
+                
+                // Renombrar tabla temporal
+                stmt.execute("ALTER TABLE productos_temp RENAME TO productos");
+                
+                // Recrear índices
+                stmt.execute("CREATE INDEX IF NOT EXISTS idx_productos_categoria ON productos(categoria)");
+                stmt.execute("CREATE INDEX IF NOT EXISTS idx_productos_activo ON productos(activo)");
+                stmt.execute("CREATE INDEX IF NOT EXISTS idx_productos_codigo ON productos(codigo)");
+                
+                logger.info("Migración completada: columna 'codigo' agregada exitosamente");
+            }
         }
     }
 
@@ -98,6 +155,7 @@ public class DatabaseManager {
         String createProductosTable = """
             CREATE TABLE IF NOT EXISTS productos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                codigo VARCHAR(20) NOT NULL UNIQUE,
                 nombre VARCHAR(100) NOT NULL,
                 descripcion TEXT,
                 precio DECIMAL(10,2) NOT NULL,
@@ -169,12 +227,12 @@ public class DatabaseManager {
 
         // Insertar productos iniciales
         String insertProductos = """
-            INSERT INTO productos (nombre, descripcion, precio, cantidad, categoria, activo) VALUES
-            ('Laptop HP', 'Laptop HP Pavilion 15 pulgadas', 2500000.00, 5, 'Electrónica', TRUE),
-            ('iPhone 13', 'Apple iPhone 13 128GB', 3500000.00, 3, 'Electrónica', TRUE),
-            ('Camiseta Nike', 'Camiseta deportiva Nike Dri-FIT', 85000.00, 20, 'Ropa', TRUE),
-            ('Sofá 3 Puestos', 'Sofá moderno 3 puestos color gris', 1200000.00, 2, 'Hogar', TRUE),
-            ('Libro Java', 'Java: The Complete Reference', 150000.00, 10, 'Otros', TRUE)
+            INSERT INTO productos (codigo, nombre, descripcion, precio, cantidad, categoria, activo) VALUES
+            ('PROD001', 'Laptop HP', 'Laptop HP Pavilion 15 pulgadas', 2500000.00, 5, 'Electrónica', TRUE),
+            ('PROD002', 'iPhone 13', 'Apple iPhone 13 128GB', 3500000.00, 3, 'Electrónica', TRUE),
+            ('PROD003', 'Camiseta Nike', 'Camiseta deportiva Nike Dri-FIT', 85000.00, 20, 'Ropa', TRUE),
+            ('PROD004', 'Sofá 3 Puestos', 'Sofá moderno 3 puestos color gris', 1200000.00, 2, 'Hogar', TRUE),
+            ('PROD005', 'Libro Java', 'Java: The Complete Reference', 150000.00, 10, 'Otros', TRUE)
         """;
 
         try (Statement stmt = conn.createStatement()) {

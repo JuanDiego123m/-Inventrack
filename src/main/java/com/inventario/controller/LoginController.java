@@ -2,9 +2,8 @@ package com.inventario.controller;
 
 import com.inventario.model.Usuario;
 import com.inventario.service.UsuarioService;
-import com.inventario.view.LoginFrame;
+import com.inventario.view.ILoginView;
 import com.inventario.view.MainFrame;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -16,11 +15,11 @@ import javax.swing.SwingUtilities;
  */
 public class LoginController {
     
-    private LoginFrame loginFrame;
+    private ILoginView loginFrame;
     private UsuarioService usuarioService;
     private Usuario usuarioActual;
 
-    public LoginController(LoginFrame loginFrame) {
+    public LoginController(ILoginView loginFrame) {
         this.loginFrame = loginFrame;
         this.usuarioService = new UsuarioService();
     }
@@ -55,12 +54,17 @@ public class LoginController {
                 
             } else {
                 // Credenciales incorrectas
-                loginFrame.mostrarError("Usuario o contraseña incorrectos.");
+                loginFrame.mostrarError("Usuario o contraseña incorrectos.\n\n" +
+                    "Usuarios de prueba:\n" +
+                    "• superadmin / superadmin123 (Super Admin)\n" +
+                    "• admin / admin123 (Admin)\n" +
+                    "• vendedor / vendedor123 (Vendedor)");
                 loginFrame.limpiarCampos();
             }
             
         } catch (Exception e) {
             loginFrame.mostrarError("Error al validar credenciales: " + e.getMessage());
+            e.printStackTrace(); // Para debugging
         }
     }
 

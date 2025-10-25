@@ -183,5 +183,29 @@ public class ProductoService {
     public boolean aumentarCantidad(int id, int cantidadReposicion) {
         return productoDAO.aumentarCantidad(id, cantidadReposicion);
     }
+
+    /**
+     * Obtiene productos disponibles (con stock > 0)
+     * 
+     * @return Lista de productos con stock disponible
+     */
+    public List<Producto> obtenerProductosDisponibles() {
+        return productoDAO.obtenerTodos().stream()
+            .filter(p -> p.getCantidad() > 0)
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Obtiene un producto por su código
+     * 
+     * @param codigo Código del producto
+     * @return Producto encontrado o null
+     */
+    public Producto obtenerProductoPorCodigo(String codigo) {
+        return productoDAO.obtenerTodos().stream()
+            .filter(p -> p.getCodigo().equals(codigo))
+            .findFirst()
+            .orElse(null);
+    }
 }
 

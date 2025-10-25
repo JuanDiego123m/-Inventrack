@@ -1,6 +1,6 @@
 package com.inventario.main;
 
-import com.inventario.view.LoginFrame;
+import com.inventario.view.ModernLoginFrame;
 import javax.swing.*;
 
 /**
@@ -27,12 +27,9 @@ public class InventarioApp {
         // Ejecutar la aplicación en el Event Dispatch Thread
         SwingUtilities.invokeLater(() -> {
             try {
-                // Crear y mostrar la ventana de login
-                LoginFrame loginFrame = new LoginFrame();
+                // Crear y mostrar la ventana de login moderna
+                ModernLoginFrame loginFrame = new ModernLoginFrame();
                 loginFrame.setVisible(true);
-                
-                // Centrar la ventana
-                loginFrame.setLocationRelativeTo(null);
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, 

@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Crear tabla de productos
 CREATE TABLE IF NOT EXISTS productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    codigo VARCHAR(20) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT,
     precio DECIMAL(10,2) NOT NULL,
@@ -54,12 +55,12 @@ INSERT OR IGNORE INTO usuarios (username, password, nombre, email, rol, activo) 
 ('juan', 'juan123', 'Juan Pérez', 'juan@inventario.com', 'VENDEDOR', TRUE);
 
 -- Insertar productos iniciales
-INSERT OR IGNORE INTO productos (nombre, descripcion, precio, cantidad, categoria, activo) VALUES
-('Laptop HP', 'Laptop HP Pavilion 15 pulgadas', 2500000.00, 5, 'Electrónica', TRUE),
-('iPhone 13', 'Apple iPhone 13 128GB', 3500000.00, 3, 'Electrónica', TRUE),
-('Camiseta Nike', 'Camiseta deportiva Nike Dri-FIT', 85000.00, 20, 'Ropa', TRUE),
-('Sofá 3 Puestos', 'Sofá moderno 3 puestos color gris', 1200000.00, 2, 'Hogar', TRUE),
-('Libro Java', 'Java: The Complete Reference', 150000.00, 10, 'Otros', TRUE);
+INSERT OR IGNORE INTO productos (codigo, nombre, descripcion, precio, cantidad, categoria, activo) VALUES
+('PROD001', 'Laptop HP', 'Laptop HP Pavilion 15 pulgadas', 2500000.00, 5, 'Electrónica', TRUE),
+('PROD002', 'iPhone 13', 'Apple iPhone 13 128GB', 3500000.00, 3, 'Electrónica', TRUE),
+('PROD003', 'Camiseta Nike', 'Camiseta deportiva Nike Dri-FIT', 85000.00, 20, 'Ropa', TRUE),
+('PROD004', 'Sofá 3 Puestos', 'Sofá moderno 3 puestos color gris', 1200000.00, 2, 'Hogar', TRUE),
+('PROD005', 'Libro Java', 'Java: The Complete Reference', 150000.00, 10, 'Otros', TRUE);
 
 -- Crear índices para mejorar el rendimiento
 CREATE INDEX IF NOT EXISTS idx_usuarios_username ON usuarios(username);

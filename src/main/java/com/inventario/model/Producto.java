@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  */
 public class Producto {
     private int id;
+    private String codigo;
     private String nombre;
     private String descripcion;
     private BigDecimal precio;
@@ -41,6 +42,14 @@ public class Producto {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
