@@ -1,6 +1,6 @@
-# 🎨 Guía de Diseño Profesional - Sistema de Inventario v2.0
+# 🎨 Guía de Diseño Profesional - Sistema de Inventario 
 
-## 📋 Índice
+##  Índice
 1. [Paleta de Colores](#paleta-de-colores)
 2. [Tipografía](#tipografía)
 3. [Componentes Rediseñados](#componentes-rediseñados)
@@ -10,7 +10,7 @@
 
 ---
 
-## 🎨 Paleta de Colores
+##  🎨 Paleta de Colores
 
 ### Colores Principales
 
@@ -41,7 +41,7 @@ CARD_COLOR       = #FFFFFF  // Blanco (Cards)
 
 ---
 
-## 📝 Tipografía
+## Tipografía
 
 ### Fuente Principal: **Segoe UI**
 
@@ -64,7 +64,7 @@ INPUT_FONT    = Segoe UI Plain 12px   // Campos de entrada
 
 ---
 
-## 🖼️ Componentes Rediseñados
+##  Componentes Rediseñados
 
 ### 1. MainFrame - Menú Principal
 
@@ -110,11 +110,11 @@ INPUT_FONT    = Segoe UI Plain 12px   // Campos de entrada
 - Botón "Regresar" en el header
 
 **Botones:**
-- 💾 **Guardar** (Verde)
-- ✏️ **Actualizar** (Azul)
-- 🗑️ **Eliminar** (Rojo)
-- 🔄 **Limpiar** (Amarillo)
-- ⬅️ **Regresar al Menú** (Gris)
+- **Guardar** (Verde)
+- **Actualizar** (Azul)
+- **Eliminar** (Rojo)
+- **Limpiar** (Amarillo)
+- **Regresar al Menú** (Gris)
 
 **Estructura:**
 ```
@@ -147,11 +147,11 @@ INPUT_FONT    = Segoe UI Plain 12px   // Campos de entrada
 - Botones de acción + Regresar
 
 **Botones:**
-- ➕ **Agregar al Carrito** (Verde)
-- ➖ **Quitar Seleccionado** (Rojo)
-- 💰 **Procesar Venta** (Azul)
-- 🔄 **Limpiar Carrito** (Amarillo)
-- ⬅️ **Regresar al Menú** (Gris)
+-  **Agregar al Carrito** (Verde)
+-  **Quitar Seleccionado** (Rojo)
+-  **Procesar Venta** (Azul)
+-  **Limpiar Carrito** (Amarillo)
+-  **Regresar al Menú** (Gris)
 
 ### 4. FacturaFrame - Generar Facturas
 
@@ -162,10 +162,10 @@ INPUT_FONT    = Segoe UI Plain 12px   // Campos de entrada
 - Vista previa de factura en tiempo real
 
 **Botones:**
-- 💾 **Guardar** (Verde)
-- 🖨️ **Imprimir** (Azul)
-- 🔄 **Limpiar** (Rojo)
-- ⬅️ **Menú** (Gris)
+- **Guardar** (Verde)
+- **Imprimir** (Azul)
+- **Limpiar** (Rojo)
+- **Menú** (Gris)
 
 ### 5. ReportesFrame - Informes
 
@@ -176,15 +176,15 @@ INPUT_FONT    = Segoe UI Plain 12px   // Campos de entrada
 - Botón regresar en el header superior
 
 **Tabs:**
-- 📊 Dashboard
-- 💰 Ventas
-- 📦 Productos
-- 📋 Inventario
-- 🏆 Top Ventas
+-  Dashboard
+-  Ventas
+-  Productos
+-  Inventario
+-  Top Ventas
 
 ---
 
-## 🔄 Sistema de Navegación
+## Sistema de Navegación
 
 ### Flujo de Navegación Mejorado
 
@@ -228,14 +228,14 @@ INPUT_FONT    = Segoe UI Plain 12px   // Campos de entrada
 
 ---
 
-## 🎯 Principios de Diseño
+## Principios de Diseño
 
 ### 1. Consistencia Visual
 
-✅ **Colores**: Paleta única en todo el sistema
-✅ **Tipografía**: Segoe UI en todas las ventanas
-✅ **Espaciado**: Márgenes y padding consistentes
-✅ **Botones**: Mismo estilo en todos los módulos
+- **Colores**: Paleta única en todo el sistema
+- **Tipografía**: Segoe UI en todas las ventanas
+- **Espaciado**: Márgenes y padding consistentes
+- **Botones**: Mismo estilo en todos los módulos
 
 ### 2. Jerarquía Visual
 
@@ -269,17 +269,17 @@ Título Principal (24px Bold, Gris Oscuro)
 
 ---
 
-## 📱 Responsive y Adaptabilidad
+## Responsive y Adaptabilidad
 
 ### Tamaños de Ventana
 
 | Ventana | Ancho | Alto | Redimensionable |
 |---------|-------|------|-----------------|
-| MainFrame | 900px | 700px | ✅ Sí |
-| ProductoFrame | 1200px | 700px | ✅ Sí |
-| VentaFrame | 950px | 700px | ✅ Sí |
-| FacturaFrame | 1200px | 700px | ✅ Sí |
-| ReportesFrame | 1100px | 700px | ✅ Sí |
+| MainFrame | 900px | 700px |  Sí |
+| ProductoFrame | 1200px | 700px |  Sí |
+| VentaFrame | 950px | 700px |  Sí |
+| FacturaFrame | 1200px | 700px |  Sí |
+| ReportesFrame | 1100px | 700px |  Sí |
 
 ### Adaptación de Contenido
 
@@ -289,7 +289,7 @@ Título Principal (24px Bold, Gris Oscuro)
 
 ---
 
-## 🔧 Guía de Implementación
+## Guía de Implementación
 
 ### Estructura de un Botón Moderno
 
@@ -349,22 +349,22 @@ panelSuperior.add(btnRegresar, BorderLayout.EAST);
 
 ---
 
-## 🎨 Ejemplos Visuales
+##  Ejemplos Visuales
 
 ### Botones por Tipo de Acción
 
 ```
-[💾 Guardar]     Verde  - Confirmar creación/guardado
-[✏️ Actualizar]  Azul   - Modificar existente
-[🗑️ Eliminar]    Rojo   - Borrar registro
-[🔄 Limpiar]     Amarillo - Resetear formulario
-[⬅️ Regresar]    Gris   - Volver al menú
-[➕ Agregar]     Verde  - Añadir a lista
-[➖ Quitar]      Rojo   - Remover de lista
-[💰 Procesar]    Azul   - Ejecutar acción principal
-[📊 Reporte]     Amarillo - Ver estadísticas
-[💾 Guardar]     Verde  - Guardar archivo
-[🖨️ Imprimir]    Azul   - Imprimir documento
+[ Guardar]     Verde  - Confirmar creación/guardado
+[ Actualizar]  Azul   - Modificar existente
+[ Eliminar]    Rojo   - Borrar registro
+[ Limpiar]     Amarillo - Resetear formulario
+[ Regresar]    Gris   - Volver al menú
+[ Agregar]     Verde  - Añadir a lista
+[ Quitar]      Rojo   - Remover de lista
+[ Procesar]    Azul   - Ejecutar acción principal
+[ Reporte]     Amarillo - Ver estadísticas
+[ Guardar]     Verde  - Guardar archivo
+[ Imprimir]    Azul   - Imprimir documento
 ```
 
 ### Tabla con Header Azul
@@ -382,54 +382,54 @@ panelSuperior.add(btnRegresar, BorderLayout.EAST);
 
 ---
 
-## 📊 Checklist de Diseño
+## Checklist de Diseño
 
-### ✅ Para Cada Ventana Nueva
+###  Para Cada Ventana Nueva
 
-- [ ] Usa la paleta de colores definida
-- [ ] Aplica la tipografía Segoe UI
-- [ ] Incluye botón "Regresar al Menú"
-- [ ] Configura cierre controlado (vuelve al menú)
-- [ ] Botones con colores semánticos
-- [ ] Efectos hover en botones
-- [ ] Padding y márgenes consistentes
-- [ ] Headers de tabla en azul
-- [ ] Iconos emoji en botones
-- [ ] Cursor tipo "mano" en clickeables
+-  Usa la paleta de colores definida
+-  Aplica la tipografía Segoe UI
+-  Incluye botón "Regresar al Menú"
+-  Configura cierre controlado (vuelve al menú)
+-  Botones con colores semánticos
+-  Efectos hover en botones
+-  Padding y márgenes consistentes
+-  Headers de tabla en azul
+-  Iconos emoji en botones
+-  Cursor tipo "mano" en clickeables
 
-### ✅ Para Cada Botón
+###  Para Cada Botón
 
-- [ ] Usa `crearBotonModerno()` o método equivalente
-- [ ] Color según función (verde/azul/rojo/amarillo/gris)
-- [ ] Icono emoji descriptivo
-- [ ] Efecto hover implementado
-- [ ] Cursor: HAND_CURSOR
-- [ ] FocusPainted: false
-- [ ] BorderPainted: false
+-  Usa `crearBotonModerno()` o método equivalente
+-  Color según función (verde/azul/rojo/amarillo/gris)
+-  Icono emoji descriptivo
+-  Efecto hover implementado
+-  Cursor: HAND_CURSOR
+-  FocusPainted: false
+-  BorderPainted: false
 
 ---
 
-## 🚀 Ventajas del Nuevo Diseño
+##  Ventajas del Nuevo Diseño
 
 ### Para el Usuario
 
-✅ **Navegación Clara**: Botones grandes y visibles
-✅ **Identificación Rápida**: Iconos y colores semánticos
-✅ **Sin Confusiones**: Siempre sabe cómo volver
-✅ **Profesional**: Aspecto moderno y corporativo
-✅ **Consistente**: Misma experiencia en todo el sistema
+- **Navegación Clara**: Botones grandes y visibles
+- **Identificación Rápida**: Iconos y colores semánticos
+- **Sin Confusiones**: Siempre sabe cómo volver
+- **Profesional**: Aspecto moderno y corporativo
+- **Consistente**: Misma experiencia en todo el sistema
 
 ### Para el Desarrollador
 
-✅ **Mantenible**: Constantes centralizadas
-✅ **Escalable**: Fácil agregar nuevos módulos
-✅ **Reutilizable**: Métodos helper para componentes
-✅ **Documentado**: Guía clara de implementación
-✅ **Estándar**: Sigue principios de diseño UX
+- **Mantenible**: Constantes centralizadas
+- **Escalable**: Fácil agregar nuevos módulos
+- **Reutilizable**: Métodos helper para componentes
+- **Documentado**: Guía clara de implementación
+- **Estándar**: Sigue principios de diseño UX
 
 ---
 
-## 📞 Soporte y Mantenimiento
+## Soporte y Mantenimiento
 
 ### Modificar Colores
 
@@ -462,7 +462,7 @@ El diseño es modular y permite personalizaciones:
 
 ---
 
-## 📚 Referencias
+##  Referencias
 
 - **Paleta Inspirada en**: Material Design y Flat UI
 - **Tipografía**: Segoe UI (Microsoft)
@@ -471,21 +471,19 @@ El diseño es modular y permite personalizaciones:
 
 ---
 
-## 🎉 Conclusión
+##  Conclusión
 
 Este diseño profesional proporciona:
 
-- ✅ Experiencia de usuario consistente y moderna
-- ✅ Navegación intuitiva sin confusiones
-- ✅ Aspecto profesional y corporativo
-- ✅ Código mantenible y escalable
-- ✅ Base sólida para futuras mejoras
+-  Experiencia de usuario consistente y moderna
+-  Navegación intuitiva sin confusiones
+-  Aspecto profesional y corporativo
+-  Código mantenible y escalable
+-  Base sólida para futuras mejoras
 
 **El sistema ahora cuenta con un diseño de nivel profesional, listo para producción.**
 
 ---
 
-*Última actualización: Octubre 2025*  
-*Versión del documento: 1.0*  
-*Sistema de Inventario v2.0*
+
 
