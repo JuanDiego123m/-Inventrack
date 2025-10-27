@@ -1,6 +1,6 @@
-# 🚀 Guía Rápida - Módulo de Reportes
+# Guía Rápida - Módulo de Reportes
 
-## ⚡ Inicio Rápido
+##  Inicio Rápido
 
 ### **1. Acceder al Módulo**
 ```
@@ -18,7 +18,7 @@ Opción 2: Clic en botón "📊 Reportes"
 🏆 Top Ventas   - Productos más vendidos
 ```
 
-## 📊 Pestaña 1: Dashboard
+##  Pestaña 1: Dashboard
 
 ### **¿Qué muestra?**
 
@@ -41,10 +41,10 @@ Vista rápida de 6 indicadores clave:
 
 ### **¿Cómo usar?**
 
-- ✅ **Ver** - Los datos se cargan automáticamente
-- 🔄 **Actualizar** - Cambiar a otra pestaña y volver
+-  **Ver** - Los datos se cargan automáticamente
+-  **Actualizar** - Cambiar a otra pestaña y volver
 
-## 💰 Pestaña 2: Ventas
+##  Pestaña 2: Ventas
 
 ### **¿Qué muestra?**
 
@@ -62,14 +62,14 @@ Tabla con todas las ventas registradas:
    - Scroll para ver todas las ventas
 
 2. **Actualizar**
-   - Clic en "🔄 Actualizar"
+   - Clic en " Actualizar"
 
 3. **Exportar**
-   - Clic en "📄 Exportar"
+   - Clic en " Exportar"
    - Archivo .txt se guarda en carpeta raíz
    - Contiene todas las ventas con detalles
 
-## 📦 Pestaña 3: Productos
+##  Pestaña 3: Productos
 
 ### **¿Qué muestra?**
 
@@ -85,13 +85,13 @@ Tabla con todos los productos del catálogo:
    - Automático al abrir pestaña
 
 2. **Actualizar**
-   - Clic en "🔄 Actualizar"
+   - Clic en " Actualizar"
 
 3. **Exportar**
-   - Clic en "📄 Exportar"
+   - Clic en " Exportar"
    - Archivo .txt con todos los productos
 
-## 📋 Pestaña 4: Inventario
+##  Pestaña 4: Inventario
 
 ### **¿Qué muestra?**
 
@@ -130,9 +130,9 @@ Barra de Progreso:
    - ✅ Stock OK → Normal
 
 3. **Actualizar**
-   - Clic en "🔄 Actualizar"
+   - Clic en " Actualizar"
 
-## 🏆 Pestaña 5: Top Ventas
+##  Pestaña 5: Top Ventas
 
 ### **¿Qué muestra?**
 
@@ -164,7 +164,7 @@ Los 10 productos más vendidos:
    - Promocionar productos rezagados
    - Optimizar inventario
 
-## 🔄 Botones Comunes
+##  Botones Comunes
 
 | Botón | Función |
 |-------|---------|
@@ -221,11 +221,11 @@ Total: $8,925,000.00
 ...
 ```
 
-## 💡 Tips y Trucos
+##  Tips y Trucos
 
 ### **Tip 1: Monitoreo de Stock**
 ```
-✅ RECOMENDADO:
+RECOMENDADO:
 - Revisar "Inventario" diariamente
 - Actuar cuando aparezca ⚠️ o ❌
 - Mantener barra de progreso en verde (>70%)
@@ -233,7 +233,7 @@ Total: $8,925,000.00
 
 ### **Tip 2: Análisis de Ventas**
 ```
-✅ BUENA PRÁCTICA:
+ BUENA PRÁCTICA:
 1. Revisar "Dashboard" al inicio del día
 2. Ver "Ventas" para detalles
 3. Analizar "Top Ventas" semanalmente
@@ -242,7 +242,7 @@ Total: $8,925,000.00
 
 ### **Tip 3: Reposición Inteligente**
 ```
-✅ ESTRATEGIA:
+ ESTRATEGIA:
 - Priorizar productos con ❌ Sin Stock
 - Reponer rápido productos 🥇🥈🥉
 - Revisar semanalmente ⚠️ Stock Bajo
@@ -250,7 +250,7 @@ Total: $8,925,000.00
 
 ### **Tip 4: Usar Exportaciones**
 ```
-✅ ÚTIL PARA:
+ ÚTIL PARA:
 - Auditorías
 - Respaldos
 - Análisis en Excel
@@ -258,7 +258,7 @@ Total: $8,925,000.00
 - Cumplimiento normativo
 ```
 
-## 📊 Interpretación de Datos
+##  Interpretación de Datos
 
 ### **Dashboard**
 
@@ -295,7 +295,7 @@ Si un producto sube:
 → ¿Oportunidad de promoción?
 ```
 
-## 🎯 Casos de Uso
+##  Casos de Uso
 
 ### **Caso 1: Inicio de Día**
 
@@ -329,7 +329,7 @@ Si un producto sube:
 5. Generar informe
 ```
 
-## ⚠️ Errores Comunes
+##  Errores 
 
 ### **Error: "Datos no aparecen"**
 ```
@@ -347,7 +347,7 @@ Verificar:
 - ¿Hay espacio en disco?
 ```
 
-## 🔐 Permisos
+##  Permisos
 
 | Usuario | Puede Ver | Puede Exportar |
 |---------|-----------|----------------|
@@ -356,7 +356,7 @@ Verificar:
 | VENDEDOR | ✅ Todo | ✅ Sí |
 | CONSULTA | ✅ Todo | ❌ No |
 
-## 📱 Atajos
+##  Atajos
 
 | Acción | Cómo |
 |--------|------|
@@ -365,7 +365,7 @@ Verificar:
 | Exportar | Clic en "📄" |
 | Cerrar | Clic en "X" de la ventana |
 
-## ❓ Preguntas Frecuentes
+##  Preguntas Frecuentes
 
 **P: ¿Los datos son en tiempo real?**  
 R: Sí, se actualizan cada vez que cambias de pestaña o haces clic en "Actualizar".
@@ -374,7 +374,7 @@ R: Sí, se actualizan cada vez que cambias de pestaña o haces clic en "Actualiz
 R: Actualmente muestra todas las ventas. Filtros por fecha en próxima versión.
 
 **P: ¿Qué hago si un producto está en rojo?**  
-R: ❌ Sin Stock = Reponer urgente en "Gestión de Productos".
+R:  Sin Stock = Reponer urgente en "Gestión de Productos".
 
 **P: ¿Los archivos exportados se sobrescriben?**  
 R: No, cada exportación crea un archivo nuevo con fecha y hora.
@@ -382,21 +382,13 @@ R: No, cada exportación crea un archivo nuevo con fecha y hora.
 **P: ¿Cuántos productos muestra el Top?**  
 R: Los 10 más vendidos.
 
-## 🎉 ¡Listo para Analizar!
+##  Listo para Analizar
 
 Con este módulo puedes:
 
-- ✅ **Monitorear** el negocio en tiempo real
-- ✅ **Detectar** problemas de stock
-- ✅ **Analizar** tendencias de venta
-- ✅ **Exportar** datos para auditorías
-- ✅ **Tomar decisiones** informadas
+-  **Monitorear** el negocio en tiempo real
+-  **Detectar** problemas de stock
+-  **Analizar** tendencias de venta
+-  **Exportar** datos para auditorías
+-  **Tomar decisiones** informadas
 
----
-
-**¡Usa los reportes para hacer crecer tu negocio!** 📊📈
-
----
-
-**Versión:** 1.0  
-**Última actualización:** 24 de Octubre, 2025
