@@ -1,7 +1,6 @@
 package com.inventario.view;
 
 import com.inventario.model.Usuario;
-import com.inventario.controller.RegistroUsuarioController;
 import com.inventario.util.DesignConstants;
 import javax.swing.*;
 import java.awt.*;
@@ -356,8 +355,16 @@ public class MainFrame extends JFrame {
     }
 
     private void abrirReportes() {
+        abrirReportes(0); // Por defecto abre Dashboard
+    }
+    
+    /**
+     * Abre la ventana de reportes en una pestaña específica
+     * @param tabIndex Índice de la pestaña (0=Dashboard, 1=Ventas, 2=Productos, 3=Inventario, 4=Top Ventas)
+     */
+    private void abrirReportes(int tabIndex) {
         SwingUtilities.invokeLater(() -> {
-            ReportesFrame reportesFrame = new ReportesFrame(usuarioActual, this);
+            ReportesFrame reportesFrame = new ReportesFrame(usuarioActual, this, tabIndex);
             reportesFrame.setVisible(true);
             this.setVisible(false);
         });
@@ -380,11 +387,11 @@ public class MainFrame extends JFrame {
     }
 
     private void abrirReporteInventario() {
-        abrirReportes();
+        abrirReportes(3); // Índice 3 = Pestaña de Inventario
     }
 
     private void abrirReporteVentas() {
-        abrirReportes();
+        abrirReportes(1); // Índice 1 = Pestaña de Ventas
     }
 
     private void abrirRegistrarUsuario() {
@@ -397,17 +404,16 @@ public class MainFrame extends JFrame {
         }
         
         SwingUtilities.invokeLater(() -> {
-            RegistroUsuarioFrame registroFrame = new RegistroUsuarioFrame();
-            RegistroUsuarioController controller = new RegistroUsuarioController(registroFrame, usuarioActual);
+            RegistroUsuarioFrame registroFrame = new RegistroUsuarioFrame(usuarioActual);
             registroFrame.setVisible(true);
         });
     }
 
     private void abrirCambiarPassword() {
-        JOptionPane.showMessageDialog(this,
-            "Funcionalidad en desarrollo.\nPróximamente podrá cambiar su contraseña.",
-            "En Desarrollo",
-            JOptionPane.INFORMATION_MESSAGE);
+        SwingUtilities.invokeLater(() -> {
+            CambiarPasswordFrame cambiarPasswordFrame = new CambiarPasswordFrame(usuarioActual);
+            cambiarPasswordFrame.setVisible(true);
+        });
     }
 
     private void cerrarSesion() {
@@ -437,9 +443,10 @@ public class MainFrame extends JFrame {
     }
     
     /**
-     * Muestra el frame principal (usado por botón regresar)
+     * Muestra el frame principal en modo maximizado (usado por botón regresar)
      */
     public void mostrar() {
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
     }
 }

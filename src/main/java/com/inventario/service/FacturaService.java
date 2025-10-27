@@ -143,12 +143,19 @@ public class FacturaService {
     }
 
     /**
-     * Guarda la factura en un archivo
+     * Genera el nombre de archivo para la factura
      */
-    public String guardarFacturaArchivo(Factura factura, boolean incluirIVA) throws IOException {
-        String nombreArchivo = String.format("factura_%s_%s.txt", 
+    public String generarNombreArchivo(Factura factura) {
+        return String.format("factura_%s_%s.txt", 
             factura.getNumeroFactura().replace("-", "_"),
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
+    }
+    
+    /**
+     * Guarda la factura en un archivo (en el directorio actual)
+     */
+    public String guardarFacturaArchivo(Factura factura, boolean incluirIVA) throws IOException {
+        String nombreArchivo = generarNombreArchivo(factura);
         
         try (FileWriter writer = new FileWriter(nombreArchivo)) {
             String contenido = generarFacturaTexto(factura, incluirIVA);
@@ -156,6 +163,140 @@ public class FacturaService {
         }
         
         return nombreArchivo;
+    }
+    
+    /**
+     * Guarda la factura en una ruta específica
+     */
+    public String guardarFacturaArchivo(Factura factura, boolean incluirIVA, String rutaCompleta) throws IOException {
+        try (FileWriter writer = new FileWriter(rutaCompleta)) {
+            String contenido = generarFacturaTexto(factura, incluirIVA);
+            writer.write(contenido);
+        }
+        
+        return rutaCompleta;
+    }
+    
+    /**
+     * Genera la factura en formato HTML para mejor impresión
+     */
+    public String generarFacturaHTML(Factura factura, boolean incluirIVA) {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("<!DOCTYPE html>\n");
+        sb.append("<html>\n<head>\n");
+        sb.append("<meta charset='UTF-8'>\n");
+        sb.append("<title>Factura ").append(factura.getNumeroFactura()).append("</title>\n");
+        sb.append("<style>\n");
+        sb.append("body { font-family: 'Courier New', monospace; margin: 20px; background: white; }\n");
+        sb.append(".factura { max-width: 800px; margin: 0 auto; padding: 20px; }\n");
+        sb.append(".header { text-align: center; border-bottom: 3px double #000; padding-bottom: 10px; margin-bottom: 15px; }\n");
+        sb.append(".header h1 { margin: 0; font-size: 24px; }\n");
+        sb.append(".info { margin: 10px 0; }\n");
+        sb.append(".info-label { display: inline-block; width: 200px; font-weight: bold; }\n");
+        sb.append("table { width: 100%; border-collapse: collapse; margin: 15px 0; }\n");
+        sb.append("th { background: #333; color: white; padding: 8px; text-align: left; }\n");
+        sb.append("td { padding: 6px; border-bottom: 1px solid #ddd; }\n");
+        sb.append(".totales { text-align: right; margin-top: 20px; font-size: 14px; }\n");
+        sb.append(".total-line { margin: 5px 0; }\n");
+        sb.append(".total-final { font-size: 18px; font-weight: bold; border-top: 2px solid #000; padding-top: 10px; }\n");
+        sb.append(".footer { text-align: center; margin-top: 30px; border-top: 1px solid #000; padding-top: 10px; font-size: 12px; }\n");
+        sb.append("@media print { body { margin: 0; } .no-print { display: none; } }\n");
+        sb.append("</style>\n</head>\n<body>\n");
+        
+        sb.append("<div class='factura'>\n");
+        
+        // Encabezado
+        sb.append("<div class='header'>\n");
+        sb.append("<h1>FACTURA DE VENTA</h1>\n");
+        sb.append("<p><strong>").append(NOMBRE_EMPRESA).append("</strong></p>\n");
+        sb.append("<p>NIT: ").append(NIT_EMPRESA).append("</p>\n");
+        sb.append("<p>").append(DIRECCION_EMPRESA).append("</p>\n");
+        sb.append("<p>Tel: ").append(TELEFONO_EMPRESA).append(" | Email: ").append(EMAIL_EMPRESA).append("</p>\n");
+        sb.append("</div>\n");
+        
+        // Información de la factura
+        sb.append("<div class='info'>\n");
+        sb.append("<p><span class='info-label'>Número de Factura:</span>").append(factura.getNumeroFactura()).append("</p>\n");
+        sb.append("<p><span class='info-label'>Fecha de Emisión:</span>")
+          .append(factura.getFechaEmision().format(formatoFecha)).append("</p>\n");
+        sb.append("<p><span class='info-label'>Vendedor:</span>")
+          .append(factura.getVenta().getUsuario().getNombre()).append("</p>\n");
+        sb.append("<p><span class='info-label'>Cliente:</span>").append(factura.getClienteNombre()).append("</p>\n");
+        sb.append("<p><span class='info-label'>Documento:</span>").append(factura.getClienteDocumento()).append("</p>\n");
+        sb.append("</div>\n");
+        
+        // Tabla de productos
+        sb.append("<h3>Detalle de la Compra</h3>\n");
+        sb.append("<table>\n");
+        sb.append("<tr><th>Producto</th><th style='text-align:center'>Cantidad</th><th style='text-align:right'>Precio Unit.</th><th style='text-align:right'>Subtotal</th></tr>\n");
+        
+        BigDecimal subtotalGeneral = BigDecimal.ZERO;
+        
+        for (ItemVenta item : factura.getVenta().getItems()) {
+            sb.append("<tr>\n");
+            sb.append("<td>").append(item.getProducto().getNombre()).append("</td>\n");
+            sb.append("<td style='text-align:center'>").append(item.getCantidad()).append("</td>\n");
+            sb.append("<td style='text-align:right'>").append(formatoMoneda.format(item.getPrecioUnitario())).append("</td>\n");
+            sb.append("<td style='text-align:right'>").append(formatoMoneda.format(item.getSubtotal())).append("</td>\n");
+            sb.append("</tr>\n");
+            
+            subtotalGeneral = subtotalGeneral.add(item.getSubtotal());
+        }
+        
+        sb.append("</table>\n");
+        
+        // Totales
+        sb.append("<div class='totales'>\n");
+        sb.append("<div class='total-line'><strong>Subtotal:</strong> ").append(formatoMoneda.format(subtotalGeneral)).append("</div>\n");
+        
+        if (incluirIVA) {
+            BigDecimal iva = subtotalGeneral.multiply(BigDecimal.valueOf(0.19));
+            BigDecimal total = subtotalGeneral.add(iva);
+            
+            sb.append("<div class='total-line'><strong>IVA (19%):</strong> ").append(formatoMoneda.format(iva)).append("</div>\n");
+            sb.append("<div class='total-final'><strong>TOTAL A PAGAR:</strong> ").append(formatoMoneda.format(total)).append("</div>\n");
+            
+            factura.setSubtotal(subtotalGeneral);
+            factura.setIva(iva);
+            factura.setTotal(total);
+        } else {
+            sb.append("<div class='total-final'><strong>TOTAL A PAGAR:</strong> ").append(formatoMoneda.format(subtotalGeneral)).append("</div>\n");
+            
+            factura.setSubtotal(subtotalGeneral);
+            factura.setIva(BigDecimal.ZERO);
+            factura.setTotal(subtotalGeneral);
+        }
+        
+        sb.append("</div>\n");
+        
+        // Observaciones
+        if (factura.getObservaciones() != null && !factura.getObservaciones().isEmpty()) {
+            sb.append("<p><strong>Observaciones:</strong><br>").append(factura.getObservaciones()).append("</p>\n");
+        }
+        
+        // Pie de página
+        sb.append("<div class='footer'>\n");
+        sb.append("<p><strong>¡GRACIAS POR SU COMPRA!</strong></p>\n");
+        sb.append("<p>Esta factura es un documento válido para efectos legales y tributarios</p>\n");
+        sb.append("<p style='margin-top:10px; font-size:10px;'>Sistema de Inventario v2.0 - 2025</p>\n");
+        sb.append("</div>\n");
+        
+        sb.append("</div>\n</body>\n</html>");
+        
+        return sb.toString();
+    }
+    
+    /**
+     * Guarda la factura en formato HTML
+     */
+    public String guardarFacturaHTML(Factura factura, boolean incluirIVA, String rutaCompleta) throws IOException {
+        try (FileWriter writer = new FileWriter(rutaCompleta)) {
+            String contenido = generarFacturaHTML(factura, incluirIVA);
+            writer.write(contenido);
+        }
+        
+        return rutaCompleta;
     }
 
     /**

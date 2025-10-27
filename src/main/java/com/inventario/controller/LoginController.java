@@ -4,6 +4,7 @@ import com.inventario.model.Usuario;
 import com.inventario.service.UsuarioService;
 import com.inventario.view.ILoginView;
 import com.inventario.view.MainFrame;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 /**
@@ -69,11 +70,13 @@ public class LoginController {
     }
 
     /**
-     * Abre la ventana principal del sistema
+     * Abre la ventana principal del sistema en modo maximizado
      */
     private void abrirVentanaPrincipal() {
         SwingUtilities.invokeLater(() -> {
             MainFrame mainFrame = new MainFrame(usuarioActual);
+            // Maximizar la ventana
+            mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             mainFrame.setVisible(true);
         });
     }

@@ -167,15 +167,20 @@ public class VentaDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
+            // Primero, leer todos los datos del ResultSet
             while (rs.next()) {
-                Venta venta = mapearVenta(rs);
-                cargarItemsVenta(venta);
+                Venta venta = mapearVentaSinRelaciones(rs);
                 ventas.add(venta);
             }
             
         } catch (SQLException e) {
             System.err.println("Error al obtener ventas: " + e.getMessage());
             e.printStackTrace();
+        }
+        
+        // Luego, cargar las relaciones (usuario e items) fuera del ResultSet
+        for (Venta venta : ventas) {
+            cargarRelacionesVenta(venta);
         }
         
         return ventas;
@@ -186,6 +191,7 @@ public class VentaDAO {
      */
     public Venta obtenerPorId(int id) {
         String sql = "SELECT * FROM ventas WHERE id = ?";
+        Venta venta = null;
         
         try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -194,9 +200,7 @@ public class VentaDAO {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    Venta venta = mapearVenta(rs);
-                    cargarItemsVenta(venta);
-                    return venta;
+                    venta = mapearVentaSinRelaciones(rs);
                 }
             }
             
@@ -205,7 +209,12 @@ public class VentaDAO {
             e.printStackTrace();
         }
         
-        return null;
+        // Cargar relaciones fuera del ResultSet
+        if (venta != null) {
+            cargarRelacionesVenta(venta);
+        }
+        
+        return venta;
     }
 
     /**
@@ -223,8 +232,7 @@ public class VentaDAO {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Venta venta = mapearVenta(rs);
-                    cargarItemsVenta(venta);
+                    Venta venta = mapearVentaSinRelaciones(rs);
                     ventas.add(venta);
                 }
             }
@@ -232,6 +240,11 @@ public class VentaDAO {
         } catch (SQLException e) {
             System.err.println("Error al obtener ventas por fecha: " + e.getMessage());
             e.printStackTrace();
+        }
+        
+        // Cargar relaciones fuera del ResultSet
+        for (Venta venta : ventas) {
+            cargarRelacionesVenta(venta);
         }
         
         return ventas;
@@ -252,8 +265,7 @@ public class VentaDAO {
             
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Venta venta = mapearVenta(rs);
-                    cargarItemsVenta(venta);
+                    Venta venta = mapearVentaSinRelaciones(rs);
                     ventas.add(venta);
                 }
             }
@@ -263,24 +275,47 @@ public class VentaDAO {
             e.printStackTrace();
         }
         
+        // Cargar relaciones fuera del ResultSet
+        for (Venta venta : ventas) {
+            cargarRelacionesVenta(venta);
+        }
+        
         return ventas;
     }
 
     /**
-     * Mapea un ResultSet a un objeto Venta
+     * Mapea un ResultSet a un objeto Venta sin cargar relaciones
+     * (para evitar stmt pointer is closed)
      */
-    private Venta mapearVenta(ResultSet rs) throws SQLException {
+    private Venta mapearVentaSinRelaciones(ResultSet rs) throws SQLException {
         Venta venta = new Venta();
         venta.setId(rs.getInt("id"));
         venta.setTotal(rs.getBigDecimal("total"));
         venta.setFechaVenta(LocalDateTime.parse(rs.getString("fecha_venta")));
         
-        // Cargar usuario
+        // Guardar solo el ID del usuario para cargarlo después
         int usuarioId = rs.getInt("usuario_id");
-        Usuario usuario = usuarioDAO.obtenerPorId(usuarioId);
-        venta.setUsuario(usuario);
+        Usuario usuarioTemp = new Usuario();
+        usuarioTemp.setId(usuarioId);
+        venta.setUsuario(usuarioTemp);
         
         return venta;
+    }
+    
+    /**
+     * Carga las relaciones de una venta (usuario e items)
+     * Se ejecuta fuera del ResultSet original para evitar conflictos
+     */
+    private void cargarRelacionesVenta(Venta venta) {
+        // Cargar usuario completo
+        int usuarioId = venta.getUsuario().getId();
+        Usuario usuario = usuarioDAO.obtenerPorId(usuarioId);
+        if (usuario != null) {
+            venta.setUsuario(usuario);
+        }
+        
+        // Cargar items de la venta
+        cargarItemsVenta(venta);
     }
 
     /**

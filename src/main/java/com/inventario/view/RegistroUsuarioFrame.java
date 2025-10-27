@@ -1,22 +1,28 @@
 package com.inventario.view;
 
 import com.inventario.controller.RegistroUsuarioController;
+import com.inventario.model.Usuario;
+import com.inventario.util.DesignConstants;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
- * Interfaz para el registro de nuevos usuarios
- * Implementa todos los componentes gráficos requeridos
+ * Interfaz moderna para el registro de nuevos usuarios
+ * Diseño profesional con DesignConstants
  * 
  * @author Equipo de Desarrollo
- * @version 1.0
+ * @version 2.0 - Rediseño Profesional
  */
 public class RegistroUsuarioFrame extends JFrame {
     
-    // Componentes gráficos requeridos
+    // Componentes gráficos
     private JLabel lblTitulo;
+    private JLabel lblSubtitulo;
     private JLabel lblUsername;
     private JLabel lblPassword;
     private JLabel lblConfirmPassword;
@@ -31,233 +37,369 @@ public class RegistroUsuarioFrame extends JFrame {
     private JTextField txtEmail;
     
     private JButton btnRegistrar;
-    private JButton btnCancelar;
     private JButton btnLimpiar;
+    private JButton btnCancelar;
+    private JButton btnRegresar;
     
     private JRadioButton rdbAdmin;
     private JRadioButton rdbVendedor;
     private ButtonGroup btnGroupRol;
     
-    private JMenuBar menuBar;
-    private JMenu menuArchivo;
-    private JMenu menuAyuda;
-    private JMenuItem menuItemSalir;
-    private JMenuItem menuItemAcerca;
-    
     private RegistroUsuarioController controller;
+    private Usuario usuarioActual;
 
-    public RegistroUsuarioFrame() {
+    public RegistroUsuarioFrame(Usuario usuarioActual) {
+        this.usuarioActual = usuarioActual;
         initializeComponents();
         setupLayout();
         setupEventHandlers();
-        setupMenuBar();
         configureFrame();
     }
 
     /**
-     * Inicializa todos los componentes gráficos
+     * Inicializa todos los componentes gráficos con diseño moderno
      */
     private void initializeComponents() {
-        // Labels
+        // Título principal
         lblTitulo = new JLabel("Registro de Usuario", JLabel.CENTER);
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(0, 102, 204));
+        lblTitulo.setFont(DesignConstants.FONT_TITLE);
+        lblTitulo.setForeground(DesignConstants.PRIMARY_COLOR);
         
-        lblUsername = new JLabel("Usuario:");
-        lblPassword = new JLabel("Contraseña:");
-        lblConfirmPassword = new JLabel("Confirmar Contraseña:");
-        lblNombre = new JLabel("Nombre Completo:");
-        lblEmail = new JLabel("Email:");
-        lblRol = new JLabel("Tipo de Usuario:");
+        // Subtítulo
+        lblSubtitulo = new JLabel("Complete la información del nuevo usuario", JLabel.CENTER);
+        lblSubtitulo.setFont(DesignConstants.FONT_SMALL);
+        lblSubtitulo.setForeground(DesignConstants.TEXT_SECONDARY);
         
-        // Text Fields
-        txtUsername = new JTextField(20);
-        txtPassword = new JPasswordField(20);
-        txtConfirmPassword = new JPasswordField(20);
-        txtNombre = new JTextField(20);
-        txtEmail = new JTextField(20);
+        // Labels con diseño mejorado
+        lblUsername = crearLabel("Usuario:");
+        lblPassword = crearLabel("Contraseña:");
+        lblConfirmPassword = crearLabel("Confirmar Contraseña:");
+        lblNombre = crearLabel("Nombre Completo:");
+        lblEmail = crearLabel("Correo Electrónico:");
+        lblRol = crearLabel("Tipo de Usuario:");
         
-        // Configurar tooltips
-        txtUsername.setToolTipText("Ingrese un nombre de usuario único");
-        txtPassword.setToolTipText("Mínimo 6 caracteres");
-        txtConfirmPassword.setToolTipText("Repita la contraseña");
-        txtEmail.setToolTipText("Ingrese un email válido");
+        // Text Fields con diseño moderno
+        txtUsername = crearTextField("Ej: juan_perez");
+        txtPassword = crearPasswordField("Mínimo 6 caracteres");
+        txtConfirmPassword = crearPasswordField("Repita la contraseña");
+        txtNombre = crearTextField("Ej: Juan Pérez");
+        txtEmail = crearTextField("ejemplo@correo.com");
         
-        // Buttons
-        btnRegistrar = new JButton("Registrar Usuario");
-        btnRegistrar.setBackground(new Color(76, 175, 80));
-        btnRegistrar.setForeground(Color.WHITE);
-        btnRegistrar.setFocusPainted(false);
-        btnRegistrar.setBorder(BorderFactory.createRaisedBevelBorder());
+        // Botones con diseño moderno y tamaño más compacto
+        btnRegistrar = crearBoton("✓ Registrar", DesignConstants.SUCCESS_COLOR, DesignConstants.SUCCESS_DARK);
+        btnLimpiar = crearBoton("⟲ Limpiar", DesignConstants.WARNING_COLOR, DesignConstants.WARNING_DARK);
+        btnCancelar = crearBoton("✕ Cancelar", DesignConstants.DANGER_COLOR, DesignConstants.DANGER_DARK);
+        btnRegresar = crearBoton("← Regresar", DesignConstants.SECONDARY_COLOR, DesignConstants.SECONDARY_LIGHT);
         
-        btnCancelar = new JButton("Cancelar");
-        btnCancelar.setBackground(new Color(244, 67, 54));
-        btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFocusPainted(false);
-        btnCancelar.setBorder(BorderFactory.createRaisedBevelBorder());
+        // Radio Buttons con diseño mejorado
+        rdbAdmin = new JRadioButton("👤 Administrador");
+        rdbAdmin.setFont(DesignConstants.FONT_INPUT);
+        rdbAdmin.setForeground(DesignConstants.TEXT_PRIMARY);
+        rdbAdmin.setBackground(Color.WHITE);
+        rdbAdmin.setFocusPainted(false);
+        rdbAdmin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        btnLimpiar = new JButton("Limpiar");
-        btnLimpiar.setBackground(new Color(158, 158, 158));
-        btnLimpiar.setForeground(Color.WHITE);
-        btnLimpiar.setFocusPainted(false);
-        btnLimpiar.setBorder(BorderFactory.createRaisedBevelBorder());
-        
-        // Radio Buttons para rol
-        rdbAdmin = new JRadioButton("Administrador");
-        rdbVendedor = new JRadioButton("Vendedor");
+        rdbVendedor = new JRadioButton("🛒 Vendedor");
+        rdbVendedor.setFont(DesignConstants.FONT_INPUT);
+        rdbVendedor.setForeground(DesignConstants.TEXT_PRIMARY);
+        rdbVendedor.setBackground(Color.WHITE);
+        rdbVendedor.setFocusPainted(false);
+        rdbVendedor.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         btnGroupRol = new ButtonGroup();
         btnGroupRol.add(rdbAdmin);
         btnGroupRol.add(rdbVendedor);
-        rdbVendedor.setSelected(true); // Por defecto vendedor
-        
-        // Menu Bar
-        menuBar = new JMenuBar();
-        menuArchivo = new JMenu("Archivo");
-        menuAyuda = new JMenu("Ayuda");
-        menuItemSalir = new JMenuItem("Salir");
-        menuItemAcerca = new JMenuItem("Acerca de");
+        rdbVendedor.setSelected(true);
     }
 
     /**
-     * Configura el layout de la interfaz
+     * Crea un label con estilo consistente
+     */
+    private JLabel crearLabel(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(DesignConstants.FONT_LABEL);
+        label.setForeground(DesignConstants.TEXT_PRIMARY);
+        return label;
+    }
+
+    /**
+     * Crea un text field con diseño moderno
+     */
+    private JTextField crearTextField(String placeholder) {
+        JTextField textField = new JTextField(20);
+        textField.setFont(DesignConstants.FONT_INPUT);
+        textField.setBorder(DesignConstants.createInputBorder());
+        textField.setPreferredSize(new Dimension(300, DesignConstants.INPUT_HEIGHT));
+        
+        // Placeholder text
+        textField.setForeground(DesignConstants.TEXT_DISABLED);
+        textField.setText(placeholder);
+        
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(DesignConstants.TEXT_PRIMARY);
+                }
+                textField.setBorder(DesignConstants.createInputBorderFocus());
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(DesignConstants.TEXT_DISABLED);
+                }
+                textField.setBorder(DesignConstants.createInputBorder());
+            }
+        });
+        
+        return textField;
+    }
+
+    /**
+     * Crea un password field con diseño moderno
+     */
+    private JPasswordField crearPasswordField(String placeholder) {
+        JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setFont(DesignConstants.FONT_INPUT);
+        passwordField.setBorder(DesignConstants.createInputBorder());
+        passwordField.setPreferredSize(new Dimension(300, DesignConstants.INPUT_HEIGHT));
+        passwordField.setEchoChar((char) 0);
+        passwordField.setForeground(DesignConstants.TEXT_DISABLED);
+        passwordField.setText(placeholder);
+        
+        passwordField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (String.valueOf(passwordField.getPassword()).equals(placeholder)) {
+                    passwordField.setText("");
+                    passwordField.setEchoChar('●');
+                    passwordField.setForeground(DesignConstants.TEXT_PRIMARY);
+                }
+                passwordField.setBorder(DesignConstants.createInputBorderFocus());
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (passwordField.getPassword().length == 0) {
+                    passwordField.setEchoChar((char) 0);
+                    passwordField.setText(placeholder);
+                    passwordField.setForeground(DesignConstants.TEXT_DISABLED);
+                }
+                passwordField.setBorder(DesignConstants.createInputBorder());
+            }
+        });
+        
+        return passwordField;
+    }
+
+    /**
+     * Crea un botón con estilo moderno y efectos hover
+     */
+    private JButton crearBoton(String texto, Color bgColor, Color hoverColor) {
+        JButton button = new JButton(texto);
+        button.setFont(DesignConstants.FONT_BUTTON);
+        button.setForeground(Color.WHITE);
+        button.setBackground(bgColor);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setPreferredSize(new Dimension(130, 36)); // Botones más compactos
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        // Efecto hover
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(hoverColor);
+            }
+            
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(bgColor);
+            }
+        });
+        
+        return button;
+    }
+
+    /**
+     * Configura el layout con diseño tipo card
      */
     private void setupLayout() {
         setLayout(new BorderLayout());
+        getContentPane().setBackground(DesignConstants.BACKGROUND_COLOR);
         
-        // Panel principal
-        JPanel panelPrincipal = new JPanel(new GridBagLayout());
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panelPrincipal.setBackground(new Color(248, 248, 248));
+        // Panel principal tipo card
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+            new EmptyBorder(DesignConstants.SPACING_XLARGE, DesignConstants.SPACING_XLARGE, 
+                           DesignConstants.SPACING_XLARGE, DesignConstants.SPACING_XLARGE),
+            DesignConstants.createShadowBorder()
+        ));
         
+        // Header - Título y subtítulo
+        JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+        headerPanel.setBackground(Color.WHITE);
+        headerPanel.setBorder(new EmptyBorder(0, 0, DesignConstants.SPACING_LARGE, 0));
+        
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lblSubtitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        headerPanel.add(lblTitulo);
+        headerPanel.add(Box.createVerticalStrut(DesignConstants.SPACING_SMALL));
+        headerPanel.add(lblSubtitulo);
+        
+        // Panel del formulario
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(DesignConstants.SPACING_SMALL, DesignConstants.SPACING_MEDIUM, 
+                               DesignConstants.SPACING_SMALL, DesignConstants.SPACING_MEDIUM);
         gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // Título
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panelPrincipal.add(lblTitulo, gbc);
+        int row = 0;
         
         // Username
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        panelPrincipal.add(lblUsername, gbc);
-        gbc.gridx = 1; gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(txtUsername, gbc);
+        agregarCampo(formPanel, gbc, lblUsername, txtUsername, row++);
         
         // Password
-        gbc.gridx = 0; gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.EAST;
-        panelPrincipal.add(lblPassword, gbc);
-        gbc.gridx = 1; gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(txtPassword, gbc);
+        agregarCampo(formPanel, gbc, lblPassword, txtPassword, row++);
         
         // Confirm Password
-        gbc.gridx = 0; gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.EAST;
-        panelPrincipal.add(lblConfirmPassword, gbc);
-        gbc.gridx = 1; gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(txtConfirmPassword, gbc);
+        agregarCampo(formPanel, gbc, lblConfirmPassword, txtConfirmPassword, row++);
         
         // Nombre
-        gbc.gridx = 0; gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.EAST;
-        panelPrincipal.add(lblNombre, gbc);
-        gbc.gridx = 1; gbc.gridy = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(txtNombre, gbc);
+        agregarCampo(formPanel, gbc, lblNombre, txtNombre, row++);
         
         // Email
-        gbc.gridx = 0; gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.EAST;
-        panelPrincipal.add(lblEmail, gbc);
-        gbc.gridx = 1; gbc.gridy = 5;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(txtEmail, gbc);
+        agregarCampo(formPanel, gbc, lblEmail, txtEmail, row++);
+        
+        // Separador visual
+        JSeparator separator = new JSeparator();
+        separator.setForeground(DesignConstants.BORDER_COLOR);
+        gbc.gridx = 0;
+        gbc.gridy = row++;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(DesignConstants.SPACING_MEDIUM, 0, DesignConstants.SPACING_MEDIUM, 0);
+        formPanel.add(separator, gbc);
         
         // Rol
-        gbc.gridx = 0; gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.EAST;
-        panelPrincipal.add(lblRol, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(DesignConstants.SPACING_SMALL, DesignConstants.SPACING_MEDIUM, 
+                               DesignConstants.SPACING_SMALL, DesignConstants.SPACING_MEDIUM);
+        formPanel.add(lblRol, gbc);
         
-        JPanel panelRol = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelRol.setBackground(new Color(248, 248, 248));
-        panelRol.add(rdbAdmin);
+        JPanel panelRol = new JPanel(new FlowLayout(FlowLayout.LEFT, DesignConstants.SPACING_MEDIUM, 0));
+        panelRol.setBackground(Color.WHITE);
         panelRol.add(rdbVendedor);
+        panelRol.add(rdbAdmin);
         
-        gbc.gridx = 1; gbc.gridy = 6;
-        gbc.anchor = GridBagConstraints.WEST;
-        panelPrincipal.add(panelRol, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = row++;
+        formPanel.add(panelRol, gbc);
         
-        // Botones
-        JPanel panelBotones = new JPanel(new FlowLayout());
-        panelBotones.setBackground(new Color(248, 248, 248));
-        panelBotones.add(btnRegistrar);
-        panelBotones.add(btnLimpiar);
-        panelBotones.add(btnCancelar);
+        // Panel de botones reorganizado en dos filas
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.setLayout(new BoxLayout(botonesPanel, BoxLayout.Y_AXIS));
+        botonesPanel.setBackground(Color.WHITE);
+        botonesPanel.setBorder(new EmptyBorder(DesignConstants.SPACING_LARGE, 0, 0, 0));
         
-        gbc.gridx = 0; gbc.gridy = 7; gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panelPrincipal.add(panelBotones, gbc);
+        // Primera fila - Acción principal
+        JPanel filaPrincipal = new JPanel(new FlowLayout(FlowLayout.CENTER, DesignConstants.SPACING_SMALL, 0));
+        filaPrincipal.setBackground(Color.WHITE);
+        filaPrincipal.add(btnRegistrar);
+        filaPrincipal.add(btnLimpiar);
         
-        add(panelPrincipal, BorderLayout.CENTER);
+        // Segunda fila - Acciones secundarias
+        JPanel filaSecundaria = new JPanel(new FlowLayout(FlowLayout.CENTER, DesignConstants.SPACING_SMALL, 0));
+        filaSecundaria.setBackground(Color.WHITE);
+        filaSecundaria.add(btnRegresar);
+        filaSecundaria.add(btnCancelar);
+        
+        botonesPanel.add(filaPrincipal);
+        botonesPanel.add(Box.createVerticalStrut(DesignConstants.SPACING_SMALL));
+        botonesPanel.add(filaSecundaria);
+        
+        // Ensamblar el card
+        cardPanel.add(headerPanel);
+        cardPanel.add(formPanel);
+        cardPanel.add(botonesPanel);
+        
+        // Panel contenedor con margen
+        JPanel containerPanel = new JPanel(new GridBagLayout());
+        containerPanel.setBackground(DesignConstants.BACKGROUND_COLOR);
+        containerPanel.add(cardPanel);
+        
+        add(containerPanel, BorderLayout.CENTER);
+        
+        // Footer con información
+        JPanel footerPanel = crearFooter();
+        add(footerPanel, BorderLayout.SOUTH);
+    }
+
+    /**
+     * Agrega un campo al formulario
+     */
+    private void agregarCampo(JPanel panel, GridBagConstraints gbc, JLabel label, JComponent campo, int row) {
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.weightx = 0;
+        panel.add(label, gbc);
+        
+        gbc.gridx = 1;
+        gbc.gridy = row;
+        gbc.weightx = 1;
+        panel.add(campo, gbc);
+    }
+
+    /**
+     * Crea el panel de footer
+     */
+    private JPanel crearFooter() {
+        JPanel footer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        footer.setBackground(DesignConstants.SECONDARY_COLOR);
+        footer.setBorder(new EmptyBorder(DesignConstants.SPACING_SMALL, 0, DesignConstants.SPACING_SMALL, 0));
+        
+        JLabel lblFooter = new JLabel("Sistema de Inventario v2.0 | Solo Super Administradores pueden crear usuarios");
+        lblFooter.setFont(DesignConstants.FONT_SMALL);
+        lblFooter.setForeground(Color.WHITE);
+        footer.add(lblFooter);
+        
+        return footer;
     }
 
     /**
      * Configura los manejadores de eventos
      */
     private void setupEventHandlers() {
-        controller = new RegistroUsuarioController(this);
+        controller = new RegistroUsuarioController(this, usuarioActual);
         
-        btnRegistrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.registrarUsuario();
-            }
-        });
-        
-        btnCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnRegistrar.addActionListener(e -> controller.registrarUsuario());
+        btnLimpiar.addActionListener(e -> limpiarFormulario());
+        btnRegresar.addActionListener(e -> dispose());
+        btnCancelar.addActionListener(e -> {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro que desea cancelar?\nSe perderán los datos ingresados.",
+                "Confirmar Cancelación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            if (confirmacion == JOptionPane.YES_OPTION) {
                 dispose();
             }
         });
         
-        btnLimpiar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                limpiarFormulario();
-            }
-        });
-        
-        // Enter en confirm password field
-        txtConfirmPassword.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.registrarUsuario();
-            }
-        });
-    }
-
-    /**
-     * Configura la barra de menú
-     */
-    private void setupMenuBar() {
-        menuArchivo.add(menuItemSalir);
-        menuAyuda.add(menuItemAcerca);
-        
-        menuBar.add(menuArchivo);
-        menuBar.add(menuAyuda);
-        
-        setJMenuBar(menuBar);
-        
-        // Eventos del menú
-        menuItemSalir.addActionListener(e -> dispose());
-        menuItemAcerca.addActionListener(e -> mostrarAcercaDe());
+        // Enter para registrar
+        txtConfirmPassword.addActionListener(e -> controller.registrarUsuario());
     }
 
     /**
@@ -266,57 +408,68 @@ public class RegistroUsuarioFrame extends JFrame {
     private void configureFrame() {
         setTitle("Registro de Usuario - Sistema de Inventario");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 500);
+        setSize(650, 700);
         setLocationRelativeTo(null);
         setResizable(false);
-    }
-
-    /**
-     * Muestra información acerca de la aplicación
-     */
-    private void mostrarAcercaDe() {
-        JOptionPane.showMessageDialog(this,
-            "Sistema de Inventario v1.0\n" +
-            "Registro de Usuarios\n" +
-            "Desarrollado para Construcción de Software I\n" +
-            "Ingeniería de Software - Segundo Semestre\n\n" +
-            "© 2024 Equipo de Desarrollo",
-            "Acerca de",
-            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
      * Limpia el formulario
      */
     public void limpiarFormulario() {
-        txtUsername.setText("");
+        // Limpiar y restaurar placeholders
+        restaurarPlaceholder(txtUsername, "Ej: juan_perez");
+        restaurarPlaceholder(txtNombre, "Ej: Juan Pérez");
+        restaurarPlaceholder(txtEmail, "ejemplo@correo.com");
+        
+        // Passwords
         txtPassword.setText("");
+        txtPassword.setEchoChar((char) 0);
+        txtPassword.setForeground(DesignConstants.TEXT_DISABLED);
+        txtPassword.setText("Mínimo 6 caracteres");
+        
         txtConfirmPassword.setText("");
-        txtNombre.setText("");
-        txtEmail.setText("");
+        txtConfirmPassword.setEchoChar((char) 0);
+        txtConfirmPassword.setForeground(DesignConstants.TEXT_DISABLED);
+        txtConfirmPassword.setText("Repita la contraseña");
+        
         rdbVendedor.setSelected(true);
         txtUsername.requestFocus();
     }
 
-    // Getters para el controlador
+    /**
+     * Restaura el placeholder de un campo
+     */
+    private void restaurarPlaceholder(JTextField field, String placeholder) {
+        field.setText(placeholder);
+        field.setForeground(DesignConstants.TEXT_DISABLED);
+    }
+
+    // ========== Getters para el controlador ==========
+    
     public String getUsername() {
-        return txtUsername.getText().trim();
+        String text = txtUsername.getText().trim();
+        return text.equals("Ej: juan_perez") ? "" : text;
     }
 
     public String getPassword() {
-        return new String(txtPassword.getPassword());
+        String text = String.valueOf(txtPassword.getPassword());
+        return text.equals("Mínimo 6 caracteres") ? "" : text;
     }
 
     public String getConfirmPassword() {
-        return new String(txtConfirmPassword.getPassword());
+        String text = String.valueOf(txtConfirmPassword.getPassword());
+        return text.equals("Repita la contraseña") ? "" : text;
     }
 
     public String getNombre() {
-        return txtNombre.getText().trim();
+        String text = txtNombre.getText().trim();
+        return text.equals("Ej: Juan Pérez") ? "" : text;
     }
 
     public String getEmail() {
-        return txtEmail.getText().trim();
+        String text = txtEmail.getText().trim();
+        return text.equals("ejemplo@correo.com") ? "" : text;
     }
 
     public boolean isAdminSelected() {
@@ -328,6 +481,6 @@ public class RegistroUsuarioFrame extends JFrame {
     }
 
     public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
 }

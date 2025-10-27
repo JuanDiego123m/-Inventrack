@@ -129,7 +129,7 @@ public class ProductoDAO {
         String sql = "INSERT INTO productos (codigo, nombre, descripcion, precio, cantidad, categoria, activo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = dbManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, producto.getCodigo());
             stmt.setString(2, producto.getNombre());
@@ -142,16 +142,20 @@ public class ProductoDAO {
             int rowsAffected = stmt.executeUpdate();
             
             if (rowsAffected > 0) {
-                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        producto.setId(generatedKeys.getInt(1));
+                // Obtener el ID generado usando last_insert_rowid() (compatible con SQLite)
+                try (PreparedStatement lastIdStmt = conn.prepareStatement("SELECT last_insert_rowid()");
+                     ResultSet rs = lastIdStmt.executeQuery()) {
+                    if (rs.next()) {
+                        producto.setId(rs.getInt(1));
                     }
                 }
+                logger.info("Producto creado exitosamente: " + producto.getNombre() + " (ID: " + producto.getId() + ")");
                 return true;
             }
 
         } catch (SQLException e) {
             logger.severe("Error al crear producto: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return false;

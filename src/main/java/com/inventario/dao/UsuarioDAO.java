@@ -147,7 +147,7 @@ public class UsuarioDAO {
         String sql = "INSERT INTO usuarios (username, password, nombre, email, rol, activo) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = dbManager.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, usuario.getUsername());
             stmt.setString(2, usuario.getPassword());
@@ -159,16 +159,20 @@ public class UsuarioDAO {
             int rowsAffected = stmt.executeUpdate();
             
             if (rowsAffected > 0) {
-                try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        usuario.setId(generatedKeys.getInt(1));
+                // Obtener el ID generado usando last_insert_rowid() (compatible con SQLite)
+                try (PreparedStatement lastIdStmt = conn.prepareStatement("SELECT last_insert_rowid()");
+                     ResultSet rs = lastIdStmt.executeQuery()) {
+                    if (rs.next()) {
+                        usuario.setId(rs.getInt(1));
                     }
                 }
+                logger.info("Usuario creado exitosamente: " + usuario.getUsername() + " (ID: " + usuario.getId() + ")");
                 return true;
             }
 
         } catch (SQLException e) {
             logger.severe("Error al crear usuario: " + e.getMessage());
+            e.printStackTrace();
         }
 
         return false;

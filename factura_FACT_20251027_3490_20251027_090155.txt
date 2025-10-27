@@ -1,0 +1,46 @@
+═══════════════════════════════════════════════════════════════════
+                         FACTURA DE VENTA
+═══════════════════════════════════════════════════════════════════
+
+Empresa:                       SISTEMA DE INVENTARIO S.A.S
+NIT:                           900.123.456-7
+Dirección:                     Calle 123 #45-67, Medellín
+Teléfono:                      (604) 123-4567
+Email:                         ventas@inventario.com
+
+───────────────────────────────────────────────────────────────────
+
+Número de Factura:             FACT-20251027-3490
+Fecha de Emisión:              27/10/2025 09:01:51
+Vendedor:                      Super Administrador
+
+DATOS DEL CLIENTE:
+Nombre:                        Cliente General
+Documento:                     N/A
+
+───────────────────────────────────────────────────────────────────
+
+DETALLE DE LA COMPRA:
+
+PRODUCTO                                    CANT. PRECIO UNIT.        SUBTOTAL
+───────────────────────────────────────────────────────────────────
+Laptop HP                                       2 $ 2.500.000,00  $ 5.000.000,00
+───────────────────────────────────────────────────────────────────
+
+TOTALES:
+
+Subtotal:                                           $ 5.000.000,00
+IVA (19%):                                            $ 950.000,00
+───────────────────────────────────────────────────────────────────
+TOTAL A PAGAR:                                      $ 5.950.000,00
+
+═══════════════════════════════════════════════════════════════════
+
+                     ¡GRACIAS POR SU COMPRA!
+
+        Esta factura es un documento válido para efectos legales
+               y tributarios según la legislación vigente.
+
+───────────────────────────────────────────────────────────────────
+                Sistema de Inventario v1.0 - 2025
+═══════════════════════════════════════════════════════════════════

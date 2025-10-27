@@ -69,12 +69,28 @@ public class ReportesFrame extends JFrame {
     private JScrollPane scrollTopProductos;
 
     public ReportesFrame(Usuario usuario, MainFrame mainFrame) {
+        this(usuario, mainFrame, 0); // Por defecto muestra Dashboard
+    }
+    
+    /**
+     * Constructor con pestaña específica
+     * @param usuario Usuario actual
+     * @param mainFrame Frame principal
+     * @param tabIndex Índice de la pestaña a mostrar (0=Dashboard, 1=Ventas, 2=Productos, 3=Inventario, 4=Top Ventas)
+     */
+    public ReportesFrame(Usuario usuario, MainFrame mainFrame, int tabIndex) {
         this.usuarioActual = usuario;
         this.mainFrame = mainFrame;
         initializeComponents();
         setupLayout();
         setupEventHandlers();
         configureFrame();
+        
+        // Seleccionar la pestaña especificada
+        if (tabIndex >= 0 && tabIndex < tabbedPane.getTabCount()) {
+            tabbedPane.setSelectedIndex(tabIndex);
+        }
+        
         cargarDatos();
     }
 
@@ -508,6 +524,7 @@ public class ReportesFrame extends JFrame {
         });
         setSize(1100, 700);
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Abrir maximizada
         setResizable(true);
     }
 

@@ -181,7 +181,7 @@ public class FacturaController {
     }
 
     /**
-     * Guarda la factura en un archivo
+     * Guarda la factura en un archivo permitiendo al usuario elegir la ubicación
      */
     public void guardarFactura() {
         try {
@@ -190,35 +190,55 @@ public class FacturaController {
                 return;
             }
             
-            if (!view.confirmar("¿Desea guardar esta factura?")) {
-                return;
+            // Crear el selector de archivos
+            javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+            fileChooser.setDialogTitle("Guardar Factura");
+            fileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_ONLY);
+            
+            // Sugerir nombre de archivo
+            String nombreSugerido = facturaService.generarNombreArchivo(facturaActual);
+            fileChooser.setSelectedFile(new java.io.File(nombreSugerido));
+            
+            // Agregar filtro de archivos
+            javax.swing.filechooser.FileNameExtensionFilter filtro = 
+                new javax.swing.filechooser.FileNameExtensionFilter("Archivos de texto (*.txt)", "txt");
+            fileChooser.setFileFilter(filtro);
+            
+            // Mostrar diálogo
+            int resultado = fileChooser.showSaveDialog(null);
+            
+            if (resultado == javax.swing.JFileChooser.APPROVE_OPTION) {
+                java.io.File archivoSeleccionado = fileChooser.getSelectedFile();
+                String rutaCompleta = archivoSeleccionado.getAbsolutePath();
+                
+                // Asegurar que el archivo tenga extensión .txt
+                if (!rutaCompleta.toLowerCase().endsWith(".txt")) {
+                    rutaCompleta += ".txt";
+                }
+                
+                // Guardar en archivo
+                boolean incluirIVA = view.isIncluirIVA();
+                facturaService.guardarFacturaArchivo(facturaActual, incluirIVA, rutaCompleta);
+                
+                // Marcar como generada
+                facturaActual.setGenerada(true);
+                
+                view.mostrarMensaje(String.format(
+                    "✅ Factura guardada exitosamente!\n\n" +
+                    "Número: %s\n" +
+                    "Ubicación: %s\n" +
+                    "Total: %s",
+                    facturaActual.getNumeroFactura(),
+                    rutaCompleta,
+                    formatoMoneda.format(facturaActual.getTotal())
+                ));
+                
+                // Limpiar vista previa
+                limpiarVistaPrevia();
+                
+                // Recargar ventas
+                cargarVentas();
             }
-            
-            // Guardar en archivo
-            boolean incluirIVA = view.isIncluirIVA();
-            String nombreArchivo = facturaService.guardarFacturaArchivo(
-                facturaActual, 
-                incluirIVA
-            );
-            
-            // Marcar como generada
-            facturaActual.setGenerada(true);
-            
-            view.mostrarMensaje(String.format(
-                "✅ Factura guardada exitosamente!\n\n" +
-                "Número: %s\n" +
-                "Archivo: %s\n" +
-                "Total: %s",
-                facturaActual.getNumeroFactura(),
-                nombreArchivo,
-                formatoMoneda.format(facturaActual.getTotal())
-            ));
-            
-            // Limpiar vista previa
-            limpiarVistaPrevia();
-            
-            // Recargar ventas
-            cargarVentas();
             
         } catch (Exception e) {
             view.mostrarError("Error al guardar factura: " + e.getMessage());
@@ -227,7 +247,7 @@ public class FacturaController {
     }
 
     /**
-     * Imprime la factura (simula impresión)
+     * Imprime la factura - Genera archivo y lo abre para imprimir
      */
     public void imprimirFactura() {
         try {
@@ -236,30 +256,52 @@ public class FacturaController {
                 return;
             }
             
-            if (!view.confirmar("¿Desea imprimir esta factura?")) {
+            if (!view.confirmar("¿Desea abrir la factura para imprimir?\n\n" +
+                "Se abrirá el archivo con el programa predeterminado\n" +
+                "y podrá imprimirlo desde allí.")) {
                 return;
             }
             
-            // En una implementación real, aquí se enviaría a la impresora
-            // Por ahora, solo guardamos el archivo
-            boolean incluirIVA = view.isIncluirIVA();
-            String nombreArchivo = facturaService.guardarFacturaArchivo(
-                facturaActual, 
-                incluirIVA
-            );
+            // Generar archivo temporal HTML en la carpeta Temp del sistema
+            String carpetaTemp = System.getProperty("java.io.tmpdir");
+            String nombreArchivo = facturaService.generarNombreArchivo(facturaActual);
+            // Cambiar extensión a .html
+            nombreArchivo = nombreArchivo.replace(".txt", ".html");
+            String rutaCompleta = carpetaTemp + java.io.File.separator + nombreArchivo;
             
-            view.mostrarMensaje(String.format(
-                "🖨️ Factura lista para imprimir!\n\n" +
-                "Número: %s\n" +
-                "Archivo: %s\n\n" +
-                "Nota: En una implementación real, esto se enviaría\n" +
-                "directamente a la impresora configurada.",
-                facturaActual.getNumeroFactura(),
-                nombreArchivo
-            ));
+            // Guardar factura en formato HTML (mejor para imprimir)
+            boolean incluirIVA = view.isIncluirIVA();
+            facturaService.guardarFacturaHTML(facturaActual, incluirIVA, rutaCompleta);
+            
+            // Abrir el archivo con el programa predeterminado
+            java.io.File archivo = new java.io.File(rutaCompleta);
+            
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+                
+                if (desktop.isSupported(java.awt.Desktop.Action.OPEN)) {
+                    desktop.open(archivo);
+                    
+                    view.mostrarMensaje(String.format(
+                        "🖨️ Factura abierta para imprimir!\n\n" +
+                        "Número: %s\n" +
+                        "Archivo: %s\n\n" +
+                        "El archivo se ha abierto con el programa predeterminado.\n" +
+                        "Use Ctrl+P o el menú Archivo → Imprimir para imprimir.",
+                        facturaActual.getNumeroFactura(),
+                        nombreArchivo
+                    ));
+                } else {
+                    view.mostrarError("No se puede abrir archivos automáticamente en este sistema.\n" +
+                        "Archivo guardado en: " + rutaCompleta);
+                }
+            } else {
+                view.mostrarError("Función de apertura automática no soportada.\n" +
+                    "Archivo guardado en: " + rutaCompleta);
+            }
             
         } catch (Exception e) {
-            view.mostrarError("Error al imprimir factura: " + e.getMessage());
+            view.mostrarError("Error al preparar factura para imprimir: " + e.getMessage());
             e.printStackTrace();
         }
     }

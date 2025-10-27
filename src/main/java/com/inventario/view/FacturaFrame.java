@@ -379,6 +379,7 @@ public class FacturaFrame extends JFrame {
         });
         setSize(1200, 700);
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Abrir maximizada
         setResizable(true);
     }
     

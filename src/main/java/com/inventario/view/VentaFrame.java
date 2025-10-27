@@ -343,6 +343,7 @@ public class VentaFrame extends JFrame {
         });
         setSize(950, 700);
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Abrir maximizada
         setResizable(true);
     }
     

@@ -136,7 +136,23 @@ public class UsuarioService {
         Usuario usuario = buscarUsuario(username);
         if (usuario != null && usuario.getPassword().equals(passwordActual)) {
             usuario.setPassword(passwordNueva);
-            return true;
+            return usuarioDAO.actualizar(usuario);
+        }
+        return false;
+    }
+    
+    /**
+     * Cambia la contraseña de un usuario (versión con objeto Usuario)
+     * 
+     * @param usuario Usuario actual
+     * @param passwordActual Contraseña actual
+     * @param passwordNueva Nueva contraseña
+     * @return true si se cambió exitosamente
+     */
+    public boolean cambiarPassword(Usuario usuario, String passwordActual, String passwordNueva) {
+        if (usuario != null && usuario.getPassword().equals(passwordActual)) {
+            usuario.setPassword(passwordNueva);
+            return usuarioDAO.actualizar(usuario);
         }
         return false;
     }
