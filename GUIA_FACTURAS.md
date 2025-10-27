@@ -1,24 +1,24 @@
-# 🚀 Guía Rápida - Módulo de Generar Facturas
+# Guía Rápida - Módulo de Generar Facturas
 
-## ⚡ Inicio Rápido
+## Inicio Rápido
 
 ### **1. Acceder al Módulo**
 ```
 Opción 1: Menú Principal → "Ventas" → "Generar Factura"
-Opción 2: Clic en botón "📄 Facturas"
+Opción 2: Clic en botón " Facturas"
 ```
 
 ### **2. Generar una Factura en 5 Pasos**
 
 ```
-Paso 1: Seleccionar venta ☑️
-Paso 2: Ingresar nombre del cliente 📝
+Paso 1: Seleccionar venta ️
+Paso 2: Ingresar nombre del cliente 
 Paso 3: Decidir incluir IVA ✅/❌
-Paso 4: Generar vista previa 📄
-Paso 5: Guardar factura 💾
+Paso 4: Generar vista previa 
+Paso 5: Guardar factura 
 ```
 
-## 📋 Interfaz del Módulo
+##  Interfaz del Módulo
 
 ### **Distribución de Pantalla**
 
@@ -34,7 +34,7 @@ Paso 5: Guardar factura 💾
 └──────────────────┴──────────────────────────┘
 ```
 
-## 📊 Panel Izquierdo - Ventas
+## Panel Izquierdo - Ventas
 
 ### **Tabla de Ventas**
 
@@ -46,9 +46,9 @@ Paso 5: Guardar factura 💾
 ### **Cómo Seleccionar**
 
 ```
-✅ Hacer clic en el checkbox (☑️)
-✅ Solo UNA venta puede estar seleccionada
-✅ Clic nuevamente para deseleccionar
+- Hacer clic en el checkbox (☑️)
+- Solo UNA venta puede estar seleccionada
+- Clic nuevamente para deseleccionar
 ```
 
 ### **Datos del Cliente**
@@ -66,7 +66,7 @@ Paso 5: Guardar factura 💾
 - **Documento** - Opcional
 - **IVA** - Checkbox (marcado por defecto)
 
-## 📄 Panel Derecho - Vista Previa
+##  Panel Derecho - Vista Previa
 
 ### **Vista Previa de Factura**
 
@@ -97,7 +97,7 @@ Laptop HP                   2  $2,500k  $5,000k
 TOTAL A PAGAR:                          $10,620,750
 ```
 
-## 🔘 Botones y Acciones
+##  Botones y Acciones
 
 ### **Botones del Panel Izquierdo**
 
@@ -116,48 +116,48 @@ TOTAL A PAGAR:                          $10,620,750
 
 **Nota:** Los botones Guardar e Imprimir se habilitan solo después de generar la vista previa.
 
-## ✨ Proceso Paso a Paso
+##  Proceso Paso a Paso
 
 ### **Escenario 1: Factura Simple**
 
 ```
-1️⃣ Abrir "Generar Facturas"
-2️⃣ Marcar checkbox de Venta #1
-3️⃣ Verificar nombre: "Cliente General"
-4️⃣ Verificar IVA: ✅ Marcado
-5️⃣ Clic en "📄 Generar Factura"
-6️⃣ Revisar vista previa
-7️⃣ Clic en "💾 Guardar"
-8️⃣ Confirmar en diálogo
-9️⃣ Ver mensaje de éxito
-🔟 ¡Listo! Archivo guardado
+1. Abrir "Generar Facturas"
+2. Marcar checkbox de Venta #1
+3.Verificar nombre: "Cliente General"
+4. Verificar IVA: ✅ Marcado
+5. Clic en "📄 Generar Factura"
+6. Revisar vista previa
+7. Clic en "💾 Guardar"
+8. Confirmar en diálogo
+9. Ver mensaje de éxito
+10. Listo! Archivo guardado
 ```
 
 ### **Escenario 2: Factura Sin IVA**
 
 ```
-1️⃣ Seleccionar venta
-2️⃣ Ingresar: "Empresa Exenta Ltda"
-3️⃣ Documento: "890.123.456-1"
-4️⃣ DESMARCAR ❌ checkbox IVA
-5️⃣ Generar factura
-6️⃣ Ver que NO se calcula IVA
-7️⃣ Guardar
-8️⃣ ¡Listo!
+1. Seleccionar venta
+2. Ingresar: "Empresa Exenta Ltda"
+3. Documento: "890.123.456-1"
+4. DESMARCAR ❌ checkbox IVA
+5. Generar factura
+6. Ver que NO se calcula IVA
+7. Guardar
+8. Listo
 ```
 
 ### **Escenario 3: Imprimir Factura**
 
 ```
-1️⃣ Generar factura (pasos 1-5 anteriores)
-2️⃣ Clic en "🖨️ Imprimir"
-3️⃣ Confirmar
-4️⃣ Sistema guarda archivo
-5️⃣ Mensaje: "Lista para imprimir"
-6️⃣ Abrir archivo y enviar a impresora
+1. Generar factura (pasos 1-5 anteriores)
+2. Clic en "🖨️ Imprimir"
+3. Confirmar
+4. Sistema guarda archivo
+5. Mensaje: "Lista para imprimir"
+6. Abrir archivo y enviar a impresora
 ```
 
-## 💰 IVA - ¿Incluir o No?
+##  IVA - ¿Incluir o No?
 
 ### **CON IVA (Checkbox Marcado)**
 
@@ -183,7 +183,7 @@ TOTAL:      $8,925,000
 - Régimen especial
 - Cliente no responsable de IVA
 
-## 📁 Archivos Generados
+##  Archivos Generados
 
 ### **Ubicación**
 
@@ -215,21 +215,21 @@ Linux:    Doble clic → Abre con editor de texto
 O arrastrar a Word/LibreOffice para mejor formato
 ```
 
-## 💡 Tips y Trucos
+##  Tips y Trucos
 
 ### **Tip 1: Verificar Antes de Guardar**
 
 ```
-✅ SIEMPRE revisar vista previa
-✅ Confirmar nombre del cliente
-✅ Verificar cálculos
-✅ Revisar IVA correcto
+- SIEMPRE revisar vista previa
+- Confirmar nombre del cliente
+- Verificar cálculos
+- Revisar IVA correcto
 ```
 
 ### **Tip 2: Datos del Cliente**
 
 ```
-✅ BUENA PRÁCTICA:
+- BUENA PRÁCTICA:
 - Usar nombre completo
 - Si es empresa, incluir NIT en documento
 - Para clientes frecuentes, mantener consistencia
@@ -238,7 +238,7 @@ O arrastrar a Word/LibreOffice para mejor formato
 ### **Tip 3: Organizar Archivos**
 
 ```
-✅ RECOMENDADO:
+- RECOMENDADO:
 - Crear carpeta "Facturas"
 - Mover archivos generados
 - Organizar por mes: "Facturas/2025-10/"
@@ -248,7 +248,7 @@ O arrastrar a Word/LibreOffice para mejor formato
 ### **Tip 4: Reimprimir**
 
 ```
-⚠️ NO SE PUEDE editar factura guardada
+ NO SE PUEDE editar factura guardada
 
 Si necesita:
 1. Abrir archivo .txt
@@ -259,7 +259,7 @@ Si necesita:
 O generar nueva factura
 ```
 
-## ⚠️ Errores Comunes
+##  Errores Comunes
 
 ### **Error 1: "Seleccione una venta"**
 
@@ -297,25 +297,25 @@ Solución:
 ### **Checklist de Verificación**
 
 ```
-✅ Archivo existe en carpeta
-✅ Nombre tiene formato correcto
-✅ Tamaño > 0 bytes
-✅ Se puede abrir sin errores
-✅ Contiene todos los datos
-✅ Cálculos son correctos
+- Archivo existe en carpeta
+- Nombre tiene formato correcto
+- Tamaño > 0 bytes
+- Se puede abrir sin errores
+- Contiene todos los datos
+- Cálculos son correctos
 ```
 
 ### **Contenido Esperado**
 
 ```
 Debe incluir:
-✅ Encabezado con datos empresa
-✅ Número de factura único
-✅ Fecha y hora
-✅ Datos del cliente
-✅ Lista de productos
-✅ Subtotal, IVA, Total
-✅ Pie de factura
+- Encabezado con datos empresa
+- Número de factura único
+- Fecha y hora
+- Datos del cliente
+- Lista de productos
+- Subtotal, IVA, Total
+- Pie de factura
 ```
 
 ## 📊 Ejemplos Prácticos
@@ -326,7 +326,7 @@ Debe incluir:
 Venta: #1
 Cliente: "María García"
 Documento: "1234567890"
-IVA: ✅ Sí
+IVA:  Sí
 
 Resultado:
 FACT-20251024-0001
@@ -339,7 +339,7 @@ Total con IVA: $10,620,750
 Venta: #2
 Cliente: "ACME Corporación S.A."
 Documento: "890.123.456-7"
-IVA: ❌ No (exenta)
+IVA:  No (exenta)
 
 Resultado:
 FACT-20251024-0002
@@ -352,14 +352,14 @@ Total sin IVA: $6,000,000
 Venta: #3
 Cliente: "Cliente General"
 Documento: "N/A"
-IVA: ✅ Sí
+IVA:  Sí
 
 Resultado:
 FACT-20251024-0003
 Total: $2,975,000
 ```
 
-## 🎯 Preguntas Frecuentes
+##  Preguntas Frecuentes
 
 **P: ¿Puedo facturar la misma venta dos veces?**  
 R: Sí, pero cada factura tendrá número único. Útil para reimpresiones.
@@ -382,7 +382,7 @@ R: No actualmente. Solo formato .txt. PDF en próxima versión.
 **P: ¿Cómo envío la factura al cliente?**  
 R: Adjuntar archivo .txt al email, o imprimir y entregar físicamente.
 
-## 🔐 Permisos
+##  Permisos
 
 | Usuario | Puede Generar Facturas |
 |---------|------------------------|
@@ -400,21 +400,20 @@ R: Adjuntar archivo .txt al email, o imprimir y entregar físicamente.
 | Guardar | Clic botón o Ctrl+S (si implementado) |
 | Limpiar | Clic botón |
 
-## 🎉 ¡Listo para Facturar!
+##  Listo para Facturar
 
 Con este módulo puedes:
 
-- ✅ **Generar facturas** profesionales
-- ✅ **Personalizar** datos del cliente  
-- ✅ **Incluir/excluir** IVA según necesidad
-- ✅ **Guardar** archivos organizados
-- ✅ **Cumplir** con normativas
+-  **Generar facturas** profesionales
+-  **Personalizar** datos del cliente  
+-  **Incluir/excluir** IVA según necesidad
+-  **Guardar** archivos organizados
+-  **Cumplir** con normativas
 
 ---
 
-**¡Facturación rápida y profesional!** 📄💼
 
----
 
-**Versión:** 1.0  
-**Última actualización:** 24 de Octubre, 2025
+
+
+
