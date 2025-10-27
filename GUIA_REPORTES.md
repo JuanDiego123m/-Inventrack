@@ -147,9 +147,9 @@ Los 10 productos más vendidos:
 
 ### **Medallas**
 
-- 🥇 **Oro** - 1er lugar
-- 🥈 **Plata** - 2do lugar
-- 🥉 **Bronce** - 3er lugar
+-  **Oro** - 1er lugar
+-  **Plata** - 2do lugar
+-  **Bronce** - 3er lugar
 - **Número** - Del 4to al 10mo
 
 ### **¿Cómo usar?**
@@ -351,10 +351,10 @@ Verificar:
 
 | Usuario | Puede Ver | Puede Exportar |
 |---------|-----------|----------------|
-| SUPER_ADMIN | ✅ Todo | ✅ Sí |
-| ADMIN | ✅ Todo | ✅ Sí |
-| VENDEDOR | ✅ Todo | ✅ Sí |
-| CONSULTA | ✅ Todo | ❌ No |
+| SUPER_ADMIN | Todo |  Sí |
+| ADMIN |  Todo |  Sí |
+| VENDEDOR |  Todo |  Sí |
+| CONSULTA |  Todo |  No |
 
 ##  Atajos
 
